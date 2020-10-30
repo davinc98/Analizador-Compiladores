@@ -5,15 +5,6 @@ import java.util.Scanner;
 public class Principal {
     
     public static void main (String[] args){
-        
-        
-        
-        String prueba = "Puto el Aacini si lee este mensaje, mas senko que se le apra cuando nos besamos";
-        
-        
-        
-        
-        
         /* Se necesita 
         Crear AFN por metodo de Thompson.
         Unir AFN's para crear un AFN y AFD para analizador léxico.
