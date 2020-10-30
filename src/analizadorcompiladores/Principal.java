@@ -8,13 +8,13 @@ public class Principal {
         
         
         
-        String prueba = "Puto el Aacini si lee este mensaje";
+        String prueba = "Puto el Aacini si lee este mensaje, mas senko que se le apra cuando nos besamos";
         
         
         
         
         
-        /* Se necesita
+        /* Se necesita 
         Crear AFN por metodo de Thompson.
         Unir AFN's para crear un AFN y AFD para analizador léxico.
         Convertir AFN a AFD.
