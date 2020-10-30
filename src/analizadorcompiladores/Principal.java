@@ -8,7 +8,7 @@ public class Principal {
         
         
         
-        String prueba = "Puto el Aacini si lee este mensaje, mas senko que se le apra cuando nos besamos";
+        String prueba = "Puto el Aacini si lee este mensaje, mas senko que se le para cuando nos besamos";
         
         
         
