@@ -35,7 +35,10 @@ public class AFN {
     }
     
     public AFN unirAFN(AFN afn2){
-        
+        Estado nuevo_edo_ini = new Estado();
+        Estado nuevo_edo_fin = new Estado();
+        this.EdosAceptacion.clear(); //borrar estados de aceptación? 
+        //nuevo_edo_ini.setTransicion(new, epsilon);
         AFN afn = new AFN();
         return afn;
     }
@@ -184,9 +187,7 @@ public class AFN {
         }
         
         for(Subconjunto Si: R){
-            
             for(char c:Alfabeto){
-                
                 ArrayList<Estado> Cn = new ArrayList<Estado>();                
                 Cn = irA(Si.getEstados(),c); 
                 
@@ -198,13 +199,7 @@ public class AFN {
                 }
             }
         }
-        
-        
-        
-        
-        
-        
-        
+ 
         return afd;
     }
     
