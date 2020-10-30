@@ -12,6 +12,7 @@ public class Principal {
         Mostrar Resultado de las operaciones C_E, Mover, Ir_A
         /Requisitos:
         //Crear clase: Estado, Transición, AFN, AFD
+        
         */
         
         AFN miAFN;
