@@ -24,7 +24,7 @@ public class Principal {
         System.out.println("-------MENU-------");
         System.out.println("1. Crear AFN básico."); //In: un caracter, y ponerle ID (para cerradura, etc)
         System.out.println("2. Unir 2 AFN."); //In: 2do AFN, ID para AFN unión, Out: AFN unión
-        System.out.println("3. Concatenas 2 AFN.");
+        System.out.println("3. Concatenar 2 AFN.");
         System.out.println("4. Cerradura Transitiva o de Kleene");
         System.out.println("5. Unión para Analizador Léxico."); //qué automata quiero unir (mostrar tabla con automatas)
         System.out.println("6. Convertir AFN a AFD."); //cualquier AFN, hasta el de la opcion 6. In: ID del AFN
@@ -61,6 +61,7 @@ public class Principal {
             case 8: //Opcional
                 break;
             default:
+                System.out.println("Hasta luego!");
                 break;
         }
     }
