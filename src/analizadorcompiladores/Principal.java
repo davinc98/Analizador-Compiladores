@@ -2,6 +2,7 @@ package analizadorcompiladores;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.google.gson.*;
 public class Principal {
     
     private static AFN miAFN;
@@ -58,9 +59,12 @@ public class Principal {
                     System.out.println("Hasta luego!");
                     break;
             }
-            System.out.println("AFN: "+listaAFN.get(0).getIdAFN());
-            //System.out.println("Trasicion: "+ listaAFN.get(0).getEstadoInicial().getTransicion().getSimbolo());
-            System.out.println("Trasicion: "+ listaAFN.get(0).getEstadoInicial().getTransicion().getSimbolo());
+//            System.out.println("AFN: "+listaAFN.get(0).getIdAFN());
+//            //System.out.println("Trasicion: "+ listaAFN.get(0).getEstadoInicial().getTransicion().getSimbolo());
+//            System.out.println("Trasicion: "+ listaAFN.get(0).getEstadoInicial().getTransicion().getSimbolo());
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            System.out.println(gson.toJson(listaAFN));
+            
         }
     }
     
