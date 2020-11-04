@@ -9,7 +9,7 @@ public class Principal {
     private static ArrayList<AFN> listaAFN = new ArrayList();
     private static ArrayList<AFD> listaAFD = new ArrayList();
     
-    public static void main (String[] args) throws CloneNotSupportedException{
+    public static void main (String[] args){
       
         
         int opcionMenu;
@@ -45,6 +45,12 @@ public class Principal {
                     afn3.unirAFN(afn4);
                     listaAFN.add(afn3);
 */
+                    AFN afn3= ClonarUtilidad.cloneAFN(listaAFN.get(0) );
+                    AFN afn4= ClonarUtilidad.cloneAFN(listaAFN.get(1) );
+                    afn3.unirAFN(afn4);
+                    listaAFN.add(afn3);
+                    
+                    
 
                     break;
                 case 3: //concatenar AFN
