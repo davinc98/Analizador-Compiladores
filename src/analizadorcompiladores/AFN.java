@@ -15,26 +15,38 @@ public class AFN {
     
     //ATRIBUTOS
     private Estado EdoInicial;
-    private char [] Alfabeto;
+    private ArrayList<Character> Alfabeto;
     private ArrayList<Estado> EdosAceptacion;     
     private ArrayList<Estado> EstadosAFN;
     private int IdAFN;
+    
+    public AFN(){
+        this.Alfabeto = new ArrayList();
+        this.EdosAceptacion = new ArrayList();
+        this.EstadosAFN = new ArrayList();
+    }
     
     //constantes'ϵ'ñ
     static final char epsilon='ϵ';
     
     //METODOS
-    public void crearBasico(char c){
-        this.Alfabeto[0] = c;
+    public void crearBasico(char c, int Id){
+        Alfabeto.add(c);
         Estado estado_ini = new Estado();
+        estado_ini.setEdoInicial(true);
+        
         Estado estado_fin = new Estado();
+        estado_fin.setEdoFinal(true);
+        
         estado_ini.setTransicion(estado_fin, c);
+        
         this.EstadosAFN.add(estado_ini);
         this.EstadosAFN.add(estado_fin);
         this.EdosAceptacion.add(estado_fin);
     }
     
     public AFN unirAFN(AFN afn2){
+        //TO DO: Unir los alafbetos
         Estado nuevo_edo_ini = new Estado();
         Estado nuevo_edo_fin = new Estado();
         this.EdosAceptacion.clear(); //borrar estados de aceptación? 
@@ -214,6 +226,10 @@ public class AFN {
     
     Estado getEstado(int id){
         return EstadosAFN.get(id);
+    }
+    
+    Estado getEstadoInicial(){
+        return EdoInicial;
     }
     
 }

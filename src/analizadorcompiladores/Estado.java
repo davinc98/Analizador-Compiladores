@@ -12,12 +12,19 @@ import java.util.ArrayList;
  * @author J.PEREZ
  */
 public class Estado {
+
+    
     
     private int Identificador;
     ArrayList<Transicion> Transiciones;
     Boolean EdoInicial;
     Boolean EdoFinal;
     int Token;
+    
+    public Estado() {
+        this.Transiciones = new ArrayList();
+    }
+    
 
     public int getIdentificador() {
         return Identificador;
@@ -86,5 +93,8 @@ public class Estado {
         this.Transiciones.add(t);
     }
     
+    public Transicion getTransicion(){
+        return Transiciones.get(0);
+    }
     
 }

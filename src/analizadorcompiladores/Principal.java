@@ -4,20 +4,12 @@ import java.util.Scanner;
 
 public class Principal {
     
+    private static AFN miAFN;
+    private static ArrayList<AFN> listaAFN = new ArrayList();
+    private static ArrayList<AFD> listaAFD = new ArrayList();
+    
     public static void main (String[] args){
-        /* Se necesita 
-        Crear AFN por metodo de Thompson.
-        Unir AFN's para crear un AFN y AFD para analizador léxico.
-        Convertir AFN a AFD.
-        Mostrar Resultado de las operaciones C_E, Mover, Ir_A
-        /Requisitos:
-        //Crear clase: Estado, Transición, AFN, AFD
-        
-        */
-        
-        AFN miAFN;
-        ArrayList<AFN> listaAFN = new ArrayList();
-        ArrayList<AFD> listaAFD = new ArrayList();
+      
         
         int opcionMenu;
         Scanner leer = new Scanner(System.in);
@@ -42,9 +34,7 @@ public class Principal {
                     System.out.print("Ingresa el caracter para la transición del AFN: ");
                     char c = leer.next().charAt(0);
                     System.out.println("C: "+c);
-                    miAFN = new AFN();
-                    miAFN.crearBasico(c);
-                    listaAFN.add(miAFN);
+                    crearAutomataBasico(c);
                     break;
                 case 2: //Unir AFN
                     break;
@@ -68,7 +58,18 @@ public class Principal {
                     System.out.println("Hasta luego!");
                     break;
             }
+            System.out.println("Estado inicial: "+
+                    listaAFN.get(0).getEstadoInicial().getIdentificador());
+            System.out.println("Trasicion: "+
+                    listaAFN.get(0));
         }
+    }
+    
+    
+    private static void crearAutomataBasico(char c){
+        AFN afn = new AFN();
+        afn.crearBasico(c, listaAFN.size()+1);        
+        listaAFN.add(afn);
     }
 
 }
