@@ -38,6 +38,12 @@ public class Principal {
                     crearAutomataBasico(c);
                     break;
                 case 2: //Unir AFN
+                    crearAutomataBasico('c');
+                    crearAutomataBasico('d');
+                    AFN afn3 = (AFN) listaAFN.get(0).clone();
+                    AFN afn4 = (AFN) listaAFN.get(1).clone();
+                    afn3.unirAFN(afn4);
+                    listaAFN.add(afn3);
                     break;
                 case 3: //concatenar AFN
                     System.out.println("hola");

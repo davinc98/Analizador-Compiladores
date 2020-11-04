@@ -6,12 +6,14 @@
 package analizadorcompiladores;
 import java.util.ArrayList;
 import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author J.PEREZ
  */
-public class AFN {    
+public class AFN implements Cloneable{    
     //ATRIBUTOS
     private Estado EdoInicial;
     private ArrayList<Character> Alfabeto;
@@ -27,6 +29,18 @@ public class AFN {
     
     //constantes'ϵ'ñ
     static final char epsilon='ϵ';
+    
+    
+    public Object clone() {
+        Object o = new Object();
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException ex) {
+            Logger.getLogger(AFN.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return o;
+    }
+    
     
     //METODOS 
     public void crearBasico(char c, int Id){
@@ -63,8 +77,8 @@ public class AFN {
         nuevo_edo_ini.setTransicion(afn2.EdoInicial, epsilon);
         
         //los viejos estados iniciales dejan de serlo 
-        this.EdoInicial.setEdoInicial(false);
-        afn2.EdoInicial.setEdoInicial(false);
+        //this.EdoInicial.setEdoInicial(false);
+        //afn2.EdoInicial.setEdoInicial(false);
         
         
         //hacemos el nuevo estado como inicial
@@ -98,21 +112,6 @@ public class AFN {
            this.EstadosAFN.get(i).setIdentificador(i);
        }
        
-       
-       
-       
-       
-       
-       
-        
-        
-        
-        
-        
-        //this.EdosAceptacion.clear(); //borrar estados de aceptación? 
-        //nuevo_edo_ini.setTransicion(new, epsilon);
-        //AFN afn = new AFN();
-       // return afn;
     }
     
     public AFN concatenarAFN(AFN afn2){     
