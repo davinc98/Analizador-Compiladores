@@ -127,7 +127,7 @@ public class AFN implements Cloneable{
             e.setEdoFinal(false);
             e.setTransicion(afn2.getEstadoInicial(), epsilon);
         }
-        afn2.getEstadoInicial().setEdoInicial(false);
+        //afn2.getEstadoInicial().setEdoInicial(false);
         
         
         //Agregar estados del afn2 al afn nuevo

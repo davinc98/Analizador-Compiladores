@@ -46,7 +46,10 @@ public class Principal {
                     listaAFN.add(afn3);
                     break;
                 case 3: //concatenar AFN
-                    System.out.println("hola");
+                    crearAutomataBasico('c');
+                    crearAutomataBasico('d');
+                    listaAFN.get(0).concatenarAFN(listaAFN.get(1)); 
+                    listaAFN.remove(1);
                     break;
                 case 4: //Cerradura
                     break;
@@ -70,10 +73,8 @@ public class Principal {
 //            System.out.println("Trasicion: "+ listaAFN.get(0).getEstadoInicial().getTransicion().getSimbolo());
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             System.out.println(gson.toJson(listaAFN));
-            
         }
     }
-    
     
     private static void crearAutomataBasico(char c){
         AFN afn = new AFN();
