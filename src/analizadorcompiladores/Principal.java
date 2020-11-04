@@ -50,6 +50,14 @@ public class Principal {
                     afn3.unirAFN(afn4);
                     listaAFN.add(afn3);
                     
+                    crearAutomataBasico('a');
+                    crearAutomataBasico('b');
+                     
+                    AFN afn5= listaAFN.get(3);
+                    afn5.unirAFN( listaAFN.get(4)   );
+                    
+                    listaAFN.add(afn5 );
+                    
                     
 
                     break;
@@ -83,6 +91,10 @@ public class Principal {
             System.out.println(gson.toJson(listaAFN));
         }
     }
+    
+    
+    
+    
     
     private static void crearAutomataBasico(char c){
         AFN afn = new AFN();

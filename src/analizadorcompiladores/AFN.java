@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  *
  * @author J.PEREZ
  */
-public class AFN implements Cloneable{    
+public class AFN {    
     //ATRIBUTOS
     private Estado EdoInicial;
     private ArrayList<Character> Alfabeto;
@@ -31,21 +31,7 @@ public class AFN implements Cloneable{
     static final char epsilon='ϵ';
     
     
-    public Object clone() throws CloneNotSupportedException{
-        AFN obj=null;
-        try{
-            obj= (AFN) super.clone();
-        }catch(CloneNotSupportedException ex){
-            System.out.println(" no se puede duplicar");
-        }
-        
-        obj.Alfabeto = (ArrayList) this.Alfabeto.clone();
-        obj.EdosAceptacion = (ArrayList) this.EdosAceptacion.clone();
-        obj.EstadosAFN = (ArrayList) this.EstadosAFN.clone();
-
-        
-        return obj;
-    }
+  
     
     
     //METODOS 
