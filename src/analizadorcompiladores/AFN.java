@@ -11,21 +11,12 @@ import java.util.Stack;
  *
  * @author J.PEREZ
  */
-public class AFN {
-    
+public class AFN {    
     //ATRIBUTOS
     private Estado EdoInicial;
     private ArrayList<Character> Alfabeto;
     private ArrayList<Estado> EdosAceptacion;     
     private ArrayList<Estado> EstadosAFN;
-
-    public int getIdAFN() {
-        return IdAFN;
-    }
-
-    public void setIdAFN(int IdAFN) {
-        this.IdAFN = IdAFN;
-    }
     private int IdAFN;
     
     public AFN(){
@@ -56,20 +47,104 @@ public class AFN {
         this.EdosAceptacion.add(estado_fin);
     }
     
-    public AFN unirAFN(AFN afn2){
-        //TO DO: Unir los alafbetos
+    public void unirAFN(AFN afn2){
+        //creamos los nuevos estados iniciale sy finales
         Estado nuevo_edo_ini = new Estado();
         Estado nuevo_edo_fin = new Estado();
-        this.EdosAceptacion.clear(); //borrar estados de aceptación? 
+        
+       this.EstadosAFN.add(nuevo_edo_ini);
+       this.EstadosAFN.add(nuevo_edo_fin);
+        //concatenar alfabetos
+        afn2.Alfabeto.removeAll(this.Alfabeto);
+        this.Alfabeto.addAll( afn2.Alfabeto);
+        
+        // el nuevo estado inicial apuntamos a los viejos estados finales
+        nuevo_edo_ini.setTransicion(this.EdoInicial, epsilon);
+        nuevo_edo_ini.setTransicion(afn2.EdoInicial, epsilon);
+        
+        //los viejos estados iniciales dejan de serlo 
+        this.EdoInicial.setEdoInicial(false);
+        afn2.EdoInicial.setEdoInicial(false);
+        
+        
+        //hacemos el nuevo estado como inicial
+        this.EdoInicial= nuevo_edo_ini;
+        this.EdoInicial.setEdoInicial(true);
+       
+       // alos viejos estados creamso trancicion epsilos al nuevo estado final en este Automata
+       for(Estado e  : this.EdosAceptacion ){
+           e.setTransicion(nuevo_edo_fin, epsilon);
+           e.setEdoFinal(false);
+       }
+       
+       this.EdosAceptacion.clear(); // borramos sus estados de aceptacion
+       
+       // alos viejos estados creamso trancicion epsilos al nuevo estado final en AFN@ Automata
+        for(Estado e  : afn2.EdosAceptacion ){
+           e.setTransicion(nuevo_edo_fin, epsilon);
+           e.setEdoFinal(false);
+  
+       }
+       
+       afn2.EdosAceptacion.clear(); // borramos sus  estados de acpetacion
+       
+       this.EstadosAFN.addAll(afn2.EstadosAFN);       
+       
+       //lo agregamos a la lista de aceptacion y lo seteamos como  final(clase de estado)
+       this.EdosAceptacion.add(nuevo_edo_fin);
+       nuevo_edo_fin.setEdoFinal(true);
+       
+       for( int i = 0; i< this.EstadosAFN.size(); i++ ){
+           this.EstadosAFN.get(i).setIdentificador(i);
+       }
+       
+       
+       
+       
+       
+       
+       
+        
+        
+        
+        
+        
+        //this.EdosAceptacion.clear(); //borrar estados de aceptación? 
         //nuevo_edo_ini.setTransicion(new, epsilon);
-        AFN afn = new AFN();
-        return afn;
+        //AFN afn = new AFN();
+       // return afn;
     }
     
-    public AFN concatenarAFN(AFN afn2){
+    public AFN concatenarAFN(AFN afn2){     
+        AFN nuevo = new AFN();
+        nuevo = this;
         
-        AFN afn = new AFN();
-        return afn;
+        //Unir Alfabetos
+        afn2.Alfabeto.remove(nuevo.Alfabeto);
+        nuevo.Alfabeto.addAll(afn2.Alfabeto);
+        
+        //Crear transicion epsilon de cada edo de aceptacion del Afn1
+        for(Estado e: nuevo.EdosAceptacion){
+            e.setEdoFinal(false);
+            e.setTransicion(afn2.getEstadoInicial(), epsilon);
+        }
+        afn2.getEstadoInicial().setEdoInicial(false);
+        
+        
+        //Agregar estados del afn2 al afn nuevo
+        nuevo.EstadosAFN.addAll(afn2.EstadosAFN);  
+        
+        //Susituir IDs
+        int i =0;
+        for(Estado e: nuevo.EstadosAFN){
+            e.setIdentificador(i);
+            i++;
+        }
+        
+        nuevo.EdosAceptacion.clear();
+        nuevo.EdosAceptacion.addAll(afn2.getEdosAceptacion());
+        
+        return nuevo;
     }
     
     public void cerrTrans(){
@@ -235,6 +310,14 @@ public class AFN {
         return true;
     }
     
+    public int getIdAFN() {
+        return IdAFN;
+    }
+
+    public void setIdAFN(int IdAFN) {
+        this.IdAFN = IdAFN;
+    }
+    
     Estado getEstado(int id){
         return EstadosAFN.get(id);
     }
@@ -242,6 +325,10 @@ public class AFN {
     Estado getEstadoInicial(){
         return EdoInicial;
     }
+    
+    ArrayList<Estado> getEdosAceptacion(){
+        return EdosAceptacion;
+    } 
     
 }
 
