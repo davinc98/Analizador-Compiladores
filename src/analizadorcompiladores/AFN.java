@@ -31,14 +31,20 @@ public class AFN implements Cloneable{
     static final char epsilon='ϵ';
     
     
-    public Object clone() {
-        Object o = new Object();
-        try {
-            return super.clone();
-        } catch (CloneNotSupportedException ex) {
-            Logger.getLogger(AFN.class.getName()).log(Level.SEVERE, null, ex);
+    public Object clone() throws CloneNotSupportedException{
+        AFN obj=null;
+        try{
+            obj= (AFN) super.clone();
+        }catch(CloneNotSupportedException ex){
+            System.out.println(" no se puede duplicar");
         }
-        return o;
+        
+        obj.Alfabeto = (ArrayList) this.Alfabeto.clone();
+        obj.EdosAceptacion = (ArrayList) this.EdosAceptacion.clone();
+        obj.EstadosAFN = (ArrayList) this.EstadosAFN.clone();
+
+        
+        return obj;
     }
     
     
