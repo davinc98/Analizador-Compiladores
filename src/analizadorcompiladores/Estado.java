@@ -12,9 +12,6 @@ import java.util.ArrayList;
  * @author J.PEREZ
  */
 public class Estado {
-
-    
-    
     private int Identificador;
     ArrayList<Transicion> Transiciones;
     Boolean EdoInicial;

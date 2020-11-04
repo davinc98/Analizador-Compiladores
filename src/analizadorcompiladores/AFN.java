@@ -18,6 +18,14 @@ public class AFN {
     private ArrayList<Character> Alfabeto;
     private ArrayList<Estado> EdosAceptacion;     
     private ArrayList<Estado> EstadosAFN;
+
+    public int getIdAFN() {
+        return IdAFN;
+    }
+
+    public void setIdAFN(int IdAFN) {
+        this.IdAFN = IdAFN;
+    }
     private int IdAFN;
     
     public AFN(){
@@ -31,11 +39,14 @@ public class AFN {
     
     //METODOS
     public void crearBasico(char c, int Id){
+        this.IdAFN = Id;
         Alfabeto.add(c);
         Estado estado_ini = new Estado();
+        estado_ini.setIdentificador(0);
         estado_ini.setEdoInicial(true);
         
         Estado estado_fin = new Estado();
+        estado_fin.setIdentificador(1);
         estado_fin.setEdoFinal(true);
         
         estado_ini.setTransicion(estado_fin, c);

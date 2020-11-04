@@ -58,17 +58,17 @@ public class Principal {
                     System.out.println("Hasta luego!");
                     break;
             }
-            System.out.println("Estado inicial: "+
-                    listaAFN.get(0).getEstadoInicial().getIdentificador());
-            System.out.println("Trasicion: "+
-                    listaAFN.get(0));
+            System.out.println("AFN: "+listaAFN.get(0).getIdAFN());
+            //System.out.println("Trasicion: "+ listaAFN.get(0).getEstadoInicial().getTransicion().getSimbolo());
+            System.out.println("Trasicion: "+ listaAFN.get(0).getEstadoInicial().getTransicion().getSimbolo());
         }
     }
     
     
     private static void crearAutomataBasico(char c){
         AFN afn = new AFN();
-        afn.crearBasico(c, listaAFN.size()+1);        
+        afn.crearBasico(c, listaAFN.size()+1);    
+        //System.out.println("Automata con id:" +afn.getIdAFN());
         listaAFN.add(afn);
     }
 
