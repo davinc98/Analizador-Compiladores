@@ -3,7 +3,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Principal {
+    static int cuentaEstados = 0;
     
+        
+        
     public static void main (String[] args){
         /* Se necesita 
         Crear AFN por metodo de Thompson.
@@ -12,13 +15,12 @@ public class Principal {
         Mostrar Resultado de las operaciones C_E, Mover, Ir_A
         /Requisitos:
         //Crear clase: Estado, Transición, AFN, AFD
-        
         */
         
         AFN miAFN;
         ArrayList<AFN> listaAFN = new ArrayList();
         ArrayList<AFD> listaAFD = new ArrayList();
-        
+    
         int opcionMenu;
         Scanner leer = new Scanner(System.in);
         boolean salir=false;
@@ -68,6 +70,8 @@ public class Principal {
                     System.out.println("Hasta luego!");
                     break;
             }
+            
+            //listaAFN.get(0).
         }
     }
 

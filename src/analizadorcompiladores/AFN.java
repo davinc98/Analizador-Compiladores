@@ -19,12 +19,11 @@ public class AFN {
     private ArrayList<Estado> EdosAceptacion;     
     private ArrayList<Estado> EstadosAFN;
     private int IdAFN;
-    
-    //constantes'ϵ'ñ
-    static final char epsilon='ϵ';
+    static final char epsilon='ϵ'; //constantes'ϵ'ñ
     
     //METODOS
     public void crearBasico(char c){
+        Principal.cuentaEstados++;
         this.Alfabeto[0] = c;
         Estado estado_ini = new Estado();
         Estado estado_fin = new Estado();
@@ -215,6 +214,48 @@ public class AFN {
     Estado getEstado(int id){
         return EstadosAFN.get(id);
     }
+
+    public Estado getEdoInicial() {
+        return EdoInicial;
+    }
+
+    public void setEdoInicial(Estado EdoInicial) {
+        this.EdoInicial = EdoInicial;
+    }
+
+    public char[] getAlfabeto() {
+        return Alfabeto;
+    }
+
+    public void setAlfabeto(char[] Alfabeto) {
+        this.Alfabeto = Alfabeto;
+    }
+
+    public ArrayList<Estado> getEdosAceptacion() {
+        return EdosAceptacion;
+    }
+
+    public void setEdosAceptacion(ArrayList<Estado> EdosAceptacion) {
+        this.EdosAceptacion = EdosAceptacion;
+    }
+
+    public ArrayList<Estado> getEstadosAFN() {
+        return EstadosAFN;
+    }
+
+    public void setEstadosAFN(ArrayList<Estado> EstadosAFN) {
+        this.EstadosAFN = EstadosAFN;
+    }
+
+    public int getIdAFN() {
+        return IdAFN;
+    }
+
+    public void setIdAFN(int IdAFN) {
+        this.IdAFN = IdAFN;
+    }
+    
+    
     
 }
 
