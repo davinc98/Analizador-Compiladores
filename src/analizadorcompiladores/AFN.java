@@ -37,7 +37,7 @@ public class AFN {
     //constantes'ϵ'ñ
     static final char epsilon='ϵ';
     
-    //METODOS
+    //METODOS 
     public void crearBasico(char c, int Id){
         this.IdAFN = Id;
         Alfabeto.add(c);
