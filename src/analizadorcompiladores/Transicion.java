@@ -36,6 +36,10 @@ public class Transicion {
         this.EdosDestino = EdosDestino;
     }
     
+    public void addEdoDestino(Estado EdoDestino) {
+        this.EdosDestino.add(EdoDestino);
+    }
+    
     public void setEdoDestino(Estado e) {
         this.EdosDestino.add(e);
     }

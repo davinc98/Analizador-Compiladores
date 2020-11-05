@@ -36,15 +36,18 @@ public class AFN {
     
     //METODOS 
     public void crearBasico(char c, int Id){
+        
         this.IdAFN = Id;
         Alfabeto.add(c);
         Estado estado_ini = new Estado();
         estado_ini.setIdentificador(0);
         estado_ini.setEdoInicial(true);
+        this.EdoInicial=estado_ini; // este esra el puto pedo  no lo pusieron grrr
         
         Estado estado_fin = new Estado();
         estado_fin.setIdentificador(1);
         estado_fin.setEdoFinal(true);
+        
         
         estado_ini.setTransicion(estado_fin, c);
         
@@ -65,13 +68,13 @@ public class AFN {
         this.Alfabeto.addAll( afn2.Alfabeto);
         
         // el nuevo estado inicial apuntamos a los viejos estados finales
+        
         nuevo_edo_ini.setTransicion(this.EdoInicial, epsilon);
         nuevo_edo_ini.setTransicion(afn2.EdoInicial, epsilon);
         
-        //los viejos estados iniciales dejan de serlo 
-        //this.EdoInicial.setEdoInicial(false);
-        //afn2.EdoInicial.setEdoInicial(false);
-        
+        //los viejos estados iniciales dejan de serlo  ???
+         this.EdoInicial.setEdoInicial(false);
+         afn2.EdoInicial.setEdoInicial(false);
         
         //hacemos el nuevo estado como inicial
         this.EdoInicial= nuevo_edo_ini;
