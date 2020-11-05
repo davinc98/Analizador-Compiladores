@@ -3,6 +3,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.google.gson.*;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 public class Principal {
     
     private static AFN miAFN;
@@ -78,6 +81,15 @@ public class Principal {
                     System.out.println("hola");
                     break;
                 case 8: //Opcional
+                    System.out.println("Probando cerradura epsilon ultimo automata creado");
+                    AFN  automataAnalizar =  listaAFN.get( listaAFN.size()-1 );
+                    AFN  automataGuardar = new AFN();
+                    ArrayList <Estado> listaCE =automataAnalizar.cerraduraEpsilon( automataAnalizar.getEstadoInicial() );
+                    automataGuardar.setEstadosAFN(listaCE);
+                    System.out.println(  listaCE.size() );
+                    
+                    listaAFN.add(automataGuardar);
+                    
                     break;
                 default:
                     salir=true;
@@ -88,7 +100,16 @@ public class Principal {
 //            //System.out.println("Trasicion: "+ listaAFN.get(0).getEstadoInicial().getTransicion().getSimbolo());
 //            System.out.println("Trasicion: "+ listaAFN.get(0).getEstadoInicial().getTransicion().getSimbolo());
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            System.out.println(gson.toJson(listaAFN));
+          // System.out.println(gson.toJson(listaAFN));
+            
+            
+            System.out.println( "Copiando json al porta papeles");
+            
+            
+            StringSelection ss = new StringSelection(gson.toJson(listaAFN));
+            Toolkit tool = Toolkit.getDefaultToolkit();
+            Clipboard clip = tool.getSystemClipboard();
+            clip.setContents(ss, null);
         }
     }
     

@@ -315,6 +315,27 @@ public class AFN {
     Estado getEstado(int id){
         return EstadosAFN.get(id);
     }
+
+    public ArrayList<Estado> getEstadosAFN() {
+        return EstadosAFN;
+    }
+
+    public void setEstadosAFN(ArrayList<Estado> EstadosAFN) {
+//        //remover estados repetidos agregar los demas
+//       EstadosAFN.removeAll(this.EstadosAFN);
+//        this.EstadosAFN.addAll( EstadosAFN);
+//        
+        this.EstadosAFN = EstadosAFN;
+    }
+    
+    public void addEstado(Estado  edo) {
+        if( ! this.EstadosAFN.contains(edo) ){ //agregarlo si no esta ya
+              this.EstadosAFN.add(edo);
+        }
+        
+    }
+    
+    
     
     Estado getEstadoInicial(){
         return EdoInicial;
