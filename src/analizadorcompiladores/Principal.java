@@ -6,18 +6,21 @@ import com.google.gson.*;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+
+
 public class Principal {
     
-    private static AFN miAFN;
+
     private static ArrayList<AFN> listaAFN = new ArrayList();
     private static ArrayList<AFD> listaAFD = new ArrayList();
     
-    public static void main (String[] args){
-      
-        
+    private static ArrayList<AFN> listaAFNUnidos = new ArrayList();
+    
+    public static void main (String[] args){        
         int opcionMenu;
         Scanner leer = new Scanner(System.in);
         boolean salir=false;
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
         while(salir==false){
             System.out.println("-------MENU-------");
@@ -41,87 +44,84 @@ public class Principal {
                     crearAutomataBasico(c);
                     break;
                 case 2: //Unir AFN
+                    System.out.print("Ingresa el identificador del primer automata: ");
+                    System.out.print("Ingresa el identificador del segundo automata: ");
+                    
                     crearAutomataBasico('c');
                     crearAutomataBasico('d');
-                /*    AFN afn3 = (AFN) listaAFN.get(0).clone();
-                    AFN afn4 = (AFN) listaAFN.get(1).clone();
-                    afn3.unirAFN(afn4);
-                    listaAFN.add(afn3);
-*/
-                    AFN afn3= ClonarUtilidad.cloneAFN(listaAFN.get(0) );
-                    AFN afn4= ClonarUtilidad.cloneAFN(listaAFN.get(1) );
-                    afn3.unirAFN(afn4);
-                    listaAFN.add(afn3);
                     
-                    crearAutomataBasico('a');
-                    crearAutomataBasico('b');
-                     
-                    AFN afn5= listaAFN.get(3);
-                    afn5.unirAFN( listaAFN.get(4)   );
-                    
-                    listaAFN.add(afn5 );
-                    
-                    
-
+                    unirAutomatas(0, 1);           
+                    //System.out.println(gson.toJson(listaAFN.get(1)));
+                    System.out.println(gson.toJson(listaAFNUnidos.get(0).getEstadosAFN()));
                     break;
+                    
                 case 3: //concatenar AFN
+                    System.out.print("Ingresa el identificador del primer automata: ");
+                    System.out.print("Ingresa el identificador del segundo automata: ");
+                    
                     crearAutomataBasico('c');
                     crearAutomataBasico('d');
-                    listaAFN.get(0).concatenarAFN(listaAFN.get(1)); 
-                    listaAFN.remove(1);
+                    concatenarAutomatas(0, 1);           
+                    //System.out.println(gson.toJson(listaAFN.get(1)));
+                    System.out.println(gson.toJson(listaAFNUnidos.get(0).getEstadosAFN()));
                     break;
                 case 4: //Cerradura
                     break;
                 case 5: //Analizador Léxico
-                    System.out.println("hola");
                     break;
                 case 6: //Convertir AFN a AFD
+                    crearAutomataBasico('c');
+                    crearAutomataBasico('d');
+                    concatenarAutomatas(0, 1);  
+                    
+                    convertirAFNaAFD(0);
                     break;
                 case 7: //Validar cadena
-                    System.out.println("hola");
                     break;
-                case 8: //Opcional
-                    System.out.println("Probando cerradura epsilon ultimo automata creado");
-                    AFN  automataAnalizar =  listaAFN.get( listaAFN.size()-1 );
-                    AFN  automataGuardar = new AFN();
-                    ArrayList <Estado> listaCE =automataAnalizar.cerraduraEpsilon( automataAnalizar.getEstadoInicial() );
-                    automataGuardar.setEstadosAFN(listaCE);
-                    System.out.println(  listaCE.size() );
-                    
-                    listaAFN.add(automataGuardar);
-                    
+                case 8: //Opcional                    
                     break;
                 default:
                     salir=true;
                     System.out.println("Hasta luego!");
                     break;
             }
-//            System.out.println("AFN: "+listaAFN.get(0).getIdAFN());
-//            //System.out.println("Trasicion: "+ listaAFN.get(0).getEstadoInicial().getTransicion().getSimbolo());
-//            System.out.println("Trasicion: "+ listaAFN.get(0).getEstadoInicial().getTransicion().getSimbolo());
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-          // System.out.println(gson.toJson(listaAFN));
-            
-            
-            System.out.println( "Copiando json al porta papeles");
-            
-            
-            StringSelection ss = new StringSelection(gson.toJson(listaAFN));
-            Toolkit tool = Toolkit.getDefaultToolkit();
-            Clipboard clip = tool.getSystemClipboard();
-            clip.setContents(ss, null);
         }
-    }
-    
-    
-    
-    
+    }  
     
     private static void crearAutomataBasico(char c){
         AFN afn = new AFN();
-        afn.crearBasico(c, listaAFN.size()+1);    
-        //System.out.println("Automata con id:" +afn.getIdAFN());
+        afn.crearBasico(c, listaAFN.size());    
+        System.out.println("Automata basico con id:" +afn.getIdAFN()+" creado.");
         listaAFN.add(afn);
+    }
+
+    private static void unirAutomatas(int Id1, int Id2) {
+        AFN aux1 = new AFN();
+        AFN aux2 = new AFN();
+        
+        aux1 = listaAFN.get(Id1).Duplicar();
+        aux2 = listaAFN.get(Id2).Duplicar();
+            
+        aux1.unirAFN(aux2);
+        listaAFNUnidos.add(aux1);
+    }
+
+    private static void concatenarAutomatas(int Id1, int Id2) {
+        AFN aux1 = new AFN();
+        AFN aux2 = new AFN();
+        
+        aux1 = listaAFN.get(Id1).Duplicar();
+        aux2 = listaAFN.get(Id2).Duplicar();
+             
+        aux1.concatenarAFN(aux2);
+        listaAFNUnidos.add(aux1);
+        
+    }
+
+    private static void convertirAFNaAFD(int Id) {
+        AFN aux1 = new AFN();        
+        aux1 = listaAFN.get(Id);
+        aux1.convertirAFN();
     }
 
 }
