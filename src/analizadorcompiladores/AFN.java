@@ -138,30 +138,37 @@ public class AFN implements Cloneable{
     }
     
     //OPERACIONES   
-    ArrayList<Estado> cerraduraEpsilon(Estado e){        
+     ArrayList<Estado> cerraduraEpsilon(Estado e){        
         Stack<Estado> s = new Stack();
         ArrayList<Estado>  R= new ArrayList<Estado>();
         Estado p;
         s.push(e);
+        
+        System.out.println(s.size());
         while( !s.empty() ){
             p= s.pop();
             R.add(p);
             for(Transicion trans: p.Transiciones){
                 if( trans.getSimbolo() == epsilon  ){
-                   if(! R.contains(p)  )
-                       s.push(p);
+                    // for para cada uno de los  estados destinos
+                   for(Estado edoDestino:  trans.getEdosDestino()){
+                      
+                        if(! R.contains(edoDestino)  )
+                       s.push(edoDestino);
+                   } 
+                   
                 }
             }
         }
         return R;
     }
     
-    ArrayList <Estado> cerraduraEpsilon(ArrayList<Estado> c){
+     ArrayList <Estado> cerraduraEpsilon(ArrayList<Estado> c){
         ArrayList<Estado > R = new ArrayList<Estado>();
         for(Estado e:c){
             R.addAll( cerraduraEpsilon(e) );
         }
-        return R;
+        return R;  
     }
     
     ArrayList<Estado> mover( Estado e, char c){
@@ -187,6 +194,9 @@ public class AFN implements Cloneable{
          R = cerraduraEpsilon(mover(E,c));
          return R;        
     }
+    
+    
+    //arraylist tiene el metodo contains para eso
     
     
     //Verifica si el conjunto de estados Cn ya esta en algun subconjunto 

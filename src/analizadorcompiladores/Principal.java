@@ -80,6 +80,23 @@ public class Principal {
                     break;
                 case 8: //Opcional                    
                     break;
+                    
+                 case 9: //copiar array list AFN  json en el portapapeles     
+                   //  Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                    // System.out.println(gson.toJson(listaAFN));
+
+
+                      System.out.println( "Copiando json al portapapeles");
+
+
+                      StringSelection ss = new StringSelection(gson.toJson(listaAFN));
+                      Toolkit tool = Toolkit.getDefaultToolkit();
+                      Clipboard clip = tool.getSystemClipboard();
+                      clip.setContents(ss, null);
+                     
+                    break;
+                     
+                    
                 default:
                     salir=true;
                     System.out.println("Hasta luego!");
