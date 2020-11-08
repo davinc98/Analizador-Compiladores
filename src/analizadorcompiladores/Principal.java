@@ -52,7 +52,7 @@ public class Principal {
                     
                     unirAutomatas(0, 1);           
                     //System.out.println(gson.toJson(listaAFN.get(1)));
-                    System.out.println(gson.toJson(listaAFNUnidos.get(0).getEstadosAFN()));
+                   // System.out.println(gson.toJson(listaAFNUnidos.get(0).getEstadosAFN()));
                     break;
                     
                 case 3: //concatenar AFN
@@ -68,9 +68,25 @@ public class Principal {
                 case 4: //Cerradura
                     
                     System.out.println("Probando cerradura epsilon ultimo automata creado");
+                    crearAutomataBasico('c');
+                    crearAutomataBasico('d');
+                    
+                    
+                    AFN auf3 =listaAFN.get(listaAFN.size()-1 );
+                    
+                    
+                    
+                    auf3.unirAFN(listaAFN.get(0));
+                    
+                    
                     AFN  automataAnalizar =  listaAFN.get( listaAFN.size()-1 );
                     AFN  automataGuardar = new AFN();
-                    ArrayList <Estado> listaCE =automataAnalizar.cerraduraEpsilon( automataAnalizar.getEstadoInicial() );
+                    
+                    
+                    ArrayList<Estado> listaEstadosAnalizar = new ArrayList();
+                    listaEstadosAnalizar.add(automataAnalizar.getEstadoInicial());
+                    
+                    ArrayList <Estado> listaCE =automataAnalizar.irA( listaEstadosAnalizar,'c');
                     automataGuardar.setEstadosAFN(listaCE);
                     System.out.println("numero de elementos c_e"+  listaCE.size() );
                     
