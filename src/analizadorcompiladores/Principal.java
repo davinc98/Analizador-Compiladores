@@ -66,6 +66,18 @@ public class Principal {
                     System.out.println(gson.toJson(listaAFNUnidos.get(0).getEstadosAFN()));
                     break;
                 case 4: //Cerradura
+                    
+                    System.out.println("Probando cerradura epsilon ultimo automata creado");
+                    AFN  automataAnalizar =  listaAFN.get( listaAFN.size()-1 );
+                    AFN  automataGuardar = new AFN();
+                    ArrayList <Estado> listaCE =automataAnalizar.cerraduraEpsilon( automataAnalizar.getEstadoInicial() );
+                    automataGuardar.setEstadosAFN(listaCE);
+                    System.out.println("numero de elementos c_e"+  listaCE.size() );
+                    
+                    listaAFN.add(automataGuardar);
+                    
+                    
+                    
                     break;
                 case 5: //Analizador Léxico
                     break;
@@ -81,7 +93,7 @@ public class Principal {
                 case 8: //Opcional                    
                     break;
                     
-                 case 9: //copiar array list AFN  json en el portapapeles     
+                 case 10: //copiar array list AFN  json en el portapapeles     
                    //  Gson gson = new GsonBuilder().setPrettyPrinting().create();
                     // System.out.println(gson.toJson(listaAFN));
 
