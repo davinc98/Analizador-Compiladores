@@ -10,20 +10,17 @@ import ventanas.*;
 
 public class Principal {
     
-    private static ArrayList<AFN> listaAFN = new ArrayList();
-    private static ArrayList<AFD> listaAFD = new ArrayList();
-    //private static ArrayList<AFN> listaAFNUnidos = new ArrayList();
+    public static ArrayList<AFN> listaAFN = new ArrayList();
+    public static ArrayList<AFD> listaAFD = new ArrayList();
     public static int opcionMenu = -1;
     
     public static void main (String[] args){        
-        Scanner leer = new Scanner(System.in);
-        boolean salir=false;
+        //Scanner leer = new Scanner(System.in);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         Menu menu = new Menu();
-        TablaAFNregistrados tablaAFN;
+        TablaAFN tablaAFN;
         
-        while(salir==false){
-            
+        while(true){
             while(opcionMenu==-1){
                 System.out.print("");
             }
@@ -44,32 +41,34 @@ public class Principal {
             */
             switch(opcionMenu){
                 case 1: //crear AFN
-                    //System.out.print("Ingresa el caracter para la transición del AFN: ");
-                    //char c = leer.next().charAt(0);
-                    //System.out.println("C: "+c);
-                    
                     String c = JOptionPane.showInputDialog("Ingresa el caracter");
                     if(c != null){
-                    crearAutomataBasico(c.charAt(0));
-                    System.out.println("Se recibió: "+c.charAt(0));
+                        System.out.println("Se recibió: "+c.charAt(0));
+                        crearAutomataBasico(c.charAt(0));
                     } else opcionMenu=-1;
                     break;
                 case 2: //Unir AFN
+                    menu.setVisible(false);
+                    tablaAFN = new TablaAFN();
                     
-                    System.out.println("Ingresa el identificador del primer automata: ");
-                    System.out.println("Ingresa el identificador del segundo automata: ");
+                    tablaAFN.inicializar(0);
+                    while(tablaAFN.V1()==-1 && tablaAFN.V2()==-1){
+                        System.out.print("");
+                    }
+                    unirAutomatas(tablaAFN.V1(), tablaAFN.V2());
                     
+                    tablaAFN.setVisible(false);
+                    menu.setVisible(true);
+                    /*
                     crearAutomataBasico('c');
                     crearAutomataBasico('d');
-                    
-                    unirAutomatas(0, 1);           
-                    //System.out.println(gson.toJson(listaAFN.get(1)));
-                   // System.out.println(gson.toJson(listaAFNUnidos.get(0).getEstadosAFN()));
+                    unirAutomatas(0, 1);
+                    */
                     opcionMenu=-1;
                     break;
                     
                 case 3: //concatenar AFN
-                    tablaAFN = new TablaAFNregistrados();
+                    
                     //tablaAFN.imprimirAccionActual("Concatenar AFN");
                     System.out.println("Ingresa el identificador del primer automata: ");
                     System.out.println("Ingresa el identificador del segundo automata: ");
@@ -139,12 +138,10 @@ public class Principal {
                     break;
                      
                 default:
-                    salir=true;
                     System.out.println("Hasta luego!");
                     break;
             }
         }
-        opcionMenu=-1;
     }  
     
     private static void crearAutomataBasico(char c){

@@ -380,7 +380,7 @@ public class AFN implements Cloneable{
     Estado getEstadoInicial(){
         return EdoInicial;
     }
-    ArrayList<Estado> getEdosAceptacion(){
+    public ArrayList<Estado> getEdosAceptacion(){
         return EdosAceptacion;
     } 
     public void setEdosAceptacion(ArrayList<Estado> EdosAceptacion) {
