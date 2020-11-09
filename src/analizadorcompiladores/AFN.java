@@ -133,8 +133,39 @@ public class AFN implements Cloneable{
     
     public void cerrTrans(){
     }
-    
-    public void cerrKleen(){
+
+    //Métodos Pepe 8/11/2020
+    public void cerraduradeKleene(){
+        Estado nuevo_edo_ini = new Estado(); 
+        nuevo_edo_ini.setEdoInicial(true);
+        nuevo_edo_ini.setTransicion(EdoInicial, epsilon);
+        
+        Estado nuevo_edo_fin = new Estado(); 
+        nuevo_edo_fin.setEdoFinal(true);
+        
+        EstadosAFN.add(0,nuevo_edo_ini);//Agregar el nuevo estado inicoal en 0
+                
+        //Crear una transicion epsilon del estado final al inicial de AFN
+        for(Estado e: EdosAceptacion){
+            e.setTransicion(EdoInicial, epsilon);
+            e.setTransicion(nuevo_edo_fin, epsilon);
+            e.setEdoFinal(false);
+        }
+        EdoInicial.setEdoInicial(false);//Se asigna el nuevo estado inicial
+        EdoInicial = nuevo_edo_ini;
+        
+        EdosAceptacion.clear();//Borrar los estados de aceptacion anteriores
+        EdosAceptacion.add(nuevo_edo_fin);
+        EstadosAFN.add(nuevo_edo_fin);  
+        
+        //Agregamos un transicion epsilon del nuevo edoIni al nuevo edoFin
+        EdoInicial.setTransicion(EdosAceptacion.get(0), epsilon);
+        
+        //Reasignacion de identificadores
+        for(int i=0;i<EstadosAFN.size();i++){
+            EstadosAFN.get(i).setIdentificador(i);
+        }
+        System.out.println("Todo OK Kleene");
     }
     
     //OPERACIONES   
