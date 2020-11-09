@@ -10,7 +10,7 @@ public class Pruebas {
     private static ArrayList<AFD> listaAFD = new ArrayList();
     
     private static ArrayList<AFN> ListaAFNBasicos = new ArrayList();
-    
+    /*
     public static void main (String[] args){        
         int opcionMenu;
         Scanner leer = new Scanner(System.in);
@@ -41,7 +41,7 @@ public class Pruebas {
 //        System.out.println(gson.toJson(afncerradura));
         System.out.println("Estados: "+afn.getEstadosAFN().size());
         
-    }  
+    } */ 
     
     private static void crearAutomataBasicoAFN(char c){
         AFN afn = new AFN();

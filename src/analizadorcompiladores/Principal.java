@@ -1,28 +1,33 @@
 package analizadorcompiladores;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 import com.google.gson.*;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-
+import javax.swing.JOptionPane;
+import ventanas.*;
 
 public class Principal {
     
-
     private static ArrayList<AFN> listaAFN = new ArrayList();
     private static ArrayList<AFD> listaAFD = new ArrayList();
-    
-    private static ArrayList<AFN> listaAFNUnidos = new ArrayList();
+    //private static ArrayList<AFN> listaAFNUnidos = new ArrayList();
+    public static int opcionMenu = -1;
     
     public static void main (String[] args){        
-        int opcionMenu;
         Scanner leer = new Scanner(System.in);
         boolean salir=false;
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Menu menu = new Menu();
+        TablaAFNregistrados tablaAFN;
         
         while(salir==false){
+            
+            while(opcionMenu==-1){
+                System.out.print("");
+            }
+            /*
             System.out.println("-------MENU-------");
             System.out.println("1. Crear AFN básico."); //In: un caracter, y ponerle ID (para cerradura, etc)
             System.out.println("2. Unir 2 AFN."); //In: 2do AFN, ID para AFN unión, Out: AFN unión
@@ -33,19 +38,26 @@ public class Principal {
             System.out.println("7. Validar cadena usando un AFN o un AFD."); //seleccionar AFN o AFD de los ya ingresados
             System.out.println("8. Opcional.");
             System.out.println("9. Salir");
+            System.out.println("10. Guardar Gson a portapapeles");
             System.out.print("Selecciona el número de la opción deseada: ");
             opcionMenu = leer.nextInt();
-
+            */
             switch(opcionMenu){
                 case 1: //crear AFN
-                    System.out.print("Ingresa el caracter para la transición del AFN: ");
-                    char c = leer.next().charAt(0);
-                    System.out.println("C: "+c);
-                    crearAutomataBasico(c);
+                    //System.out.print("Ingresa el caracter para la transición del AFN: ");
+                    //char c = leer.next().charAt(0);
+                    //System.out.println("C: "+c);
+                    
+                    String c = JOptionPane.showInputDialog("Ingresa el caracter");
+                    if(c != null){
+                    crearAutomataBasico(c.charAt(0));
+                    System.out.println("Se recibió: "+c.charAt(0));
+                    } else opcionMenu=-1;
                     break;
                 case 2: //Unir AFN
-                    System.out.print("Ingresa el identificador del primer automata: ");
-                    System.out.print("Ingresa el identificador del segundo automata: ");
+                    
+                    System.out.println("Ingresa el identificador del primer automata: ");
+                    System.out.println("Ingresa el identificador del segundo automata: ");
                     
                     crearAutomataBasico('c');
                     crearAutomataBasico('d');
@@ -53,17 +65,21 @@ public class Principal {
                     unirAutomatas(0, 1);           
                     //System.out.println(gson.toJson(listaAFN.get(1)));
                    // System.out.println(gson.toJson(listaAFNUnidos.get(0).getEstadosAFN()));
+                    opcionMenu=-1;
                     break;
                     
                 case 3: //concatenar AFN
-                    System.out.print("Ingresa el identificador del primer automata: ");
-                    System.out.print("Ingresa el identificador del segundo automata: ");
+                    tablaAFN = new TablaAFNregistrados();
+                    //tablaAFN.imprimirAccionActual("Concatenar AFN");
+                    System.out.println("Ingresa el identificador del primer automata: ");
+                    System.out.println("Ingresa el identificador del segundo automata: ");
                     
                     crearAutomataBasico('c');
                     crearAutomataBasico('d');
                     concatenarAutomatas(0, 1);           
                     //System.out.println(gson.toJson(listaAFN.get(1)));
-                    System.out.println(gson.toJson(listaAFNUnidos.get(0).getEstadosAFN()));
+                    //System.out.println(gson.toJson(listaAFNUnidos.get(0).getEstadosAFN()));
+                    opcionMenu=-1;
                     break;
                 case 4: //Cerradura
                     
@@ -93,9 +109,10 @@ public class Principal {
                     listaAFN.add(automataGuardar);
                     
                     
-                    
+                    opcionMenu=-1;
                     break;
                 case 5: //Analizador Léxico
+                    opcionMenu=-1;
                     break;
                 case 6: //Convertir AFN a AFD
                     crearAutomataBasico('c');
@@ -103,34 +120,31 @@ public class Principal {
                     concatenarAutomatas(0, 1);  
                     
                     convertirAFNaAFD(0);
+                    opcionMenu=-1;
                     break;
                 case 7: //Validar cadena
+                    opcionMenu=-1;
                     break;
-                case 8: //Opcional                    
+                case 8: //Opcional
+                    opcionMenu=-1;
                     break;
                     
-                 case 10: //copiar array list AFN  json en el portapapeles     
-                   //  Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                    // System.out.println(gson.toJson(listaAFN));
-
-
-                      System.out.println( "Copiando json al portapapeles");
-
-
-                      StringSelection ss = new StringSelection(gson.toJson(listaAFN));
-                      Toolkit tool = Toolkit.getDefaultToolkit();
-                      Clipboard clip = tool.getSystemClipboard();
-                      clip.setContents(ss, null);
-                     
+                case 10: //copiar array list AFN  json en el portapapeles     
+                    System.out.println( "Copiando json al portapapeles");
+                    StringSelection ss = new StringSelection(gson.toJson(listaAFN));
+                    Toolkit tool = Toolkit.getDefaultToolkit();
+                    Clipboard clip = tool.getSystemClipboard();
+                    clip.setContents(ss, null);
+                    opcionMenu=-1;
                     break;
                      
-                    
                 default:
                     salir=true;
                     System.out.println("Hasta luego!");
                     break;
             }
         }
+        opcionMenu=-1;
     }  
     
     private static void crearAutomataBasico(char c){
@@ -148,7 +162,7 @@ public class Principal {
         aux2 = listaAFN.get(Id2).Duplicar();
             
         aux1.unirAFN(aux2);
-        listaAFNUnidos.add(aux1);
+        listaAFN.add(aux1);
     }
 
     private static void concatenarAutomatas(int Id1, int Id2) {
@@ -159,7 +173,8 @@ public class Principal {
         aux2 = listaAFN.get(Id2).Duplicar();
              
         aux1.concatenarAFN(aux2);
-        listaAFNUnidos.add(aux1);
+        listaAFN.remove(Id2);
+        //listaAFN.add(aux1);
         
     }
 
