@@ -17,10 +17,10 @@ import java.util.ArrayList;
  */
 public class Subconjunto {
     
-    private ArrayList<Estado> Estados;//Estado resultantes al aplicar IrA
+    private ArrayList<Estado> Estados = new ArrayList<Estado>();//Estado resultantes al aplicar IrA
     private int id;//ID del subconjunto
-    private boolean marca;//True si ya fue utilizado para generar 
-                            //otros posibles subconjuntos.
+    private boolean marca = false;  //True si ya fue utilizado para generar 
+                                    //otros posibles subconjuntos.
 
     public ArrayList<Estado> getEstados() {
         return Estados;

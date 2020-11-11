@@ -42,10 +42,10 @@ public class TablaAFN extends javax.swing.JFrame {
                 fila[2] = "En proceso";
             }
             fila[3] = Principal.listaAFN.get(i).getEdoInicial().getIdentificador()+"";
-            for(int j=0;j<Principal.listaAFN.get(i).getEdosAceptacion().size();j++){
-                //fila[4] = Principal.listaAFN.get(i).getEdosAceptacion().get(j).getIdentificador()+", ";
-                fila[4] = "En proceso";
-            }
+//            for(int j=0;j<Principal.listaAFN.get(i).getEdosAceptacion().size();j++){
+//                //fila[4] = Principal.listaAFN.get(i).getEdosAceptacion().get(j).getIdentificador()+", ";
+//                fila[4] = "En proceso";
+//            }
             modelo.addRow(fila);
         }
     }

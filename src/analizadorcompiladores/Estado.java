@@ -11,17 +11,26 @@ import java.util.ArrayList;
  *
  * @author J.PEREZ
  */
-public class Estado {
+public class Estado implements Comparable<Estado>{
     private int Identificador;
-    ArrayList<Transicion> Transiciones;
-    Boolean EdoInicial;
-    Boolean EdoFinal;
-    int Token;
+    ArrayList<Transicion> Transiciones = new ArrayList();
+    Boolean EdoInicial = false;
+    Boolean EdoFinal = false;
+    int Token = 0;
+    Boolean Marca = false; //Ayudara para evitar ciclos infinitos
     
-    public Estado() {
-        this.Transiciones = new ArrayList();
+    public Estado() {}
+    
+    @Override
+    public int compareTo(Estado o) {
+            if (Identificador < o.Identificador) {
+                return -1;
+            }
+            if (Identificador > o.Identificador) {
+                return 1;
+            }
+            return 0;
     }
-    
 
     public int getIdentificador() {
         return Identificador;
@@ -82,16 +91,6 @@ public class Estado {
         t.addEdoDestino(e);
         this.Transiciones.add(t);
     }
-    
-//    public void setTransiciones(ArrayList<Estado> e, char c){
-//        //Verificar primero si ya existe una transicion con el simbolo c
-//        Transicion t = new Transicion();
-//        t.setSimbolo(c);
-//        for(Estado E: e){
-//             t.setEdoDestino(E);
-//        }        
-//        this.Transiciones.add(t);
-//    }
     
     public Transicion getTransicion(){
         return Transiciones.get(0);

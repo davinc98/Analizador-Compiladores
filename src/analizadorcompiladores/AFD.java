@@ -14,16 +14,11 @@ import java.util.ArrayList;
 public class AFD {//Faltam metodos y atributos
     
     private Estado EdoInicial;
-    private char[] Alfabeto;
-    ArrayList<Estado> Estados;
+    private ArrayList<Character> Alfabeto = new ArrayList();
+    ArrayList<Estado> Estados = new ArrayList<Estado>();
     
-
     
     AFD(){}
-    AFD(Estado inicial, char[] alfabeto){
-        this.EdoInicial = inicial;
-        this.Alfabeto = alfabeto;
-    }
 
     public Estado getEdoInicial() {
         return EdoInicial;
@@ -33,11 +28,11 @@ public class AFD {//Faltam metodos y atributos
         this.EdoInicial = EdoInicial;
     }
 
-    public char[] getAlfabeto() {
+    public ArrayList<Character> getAlfabeto() {
         return Alfabeto;
     }
 
-    public void setAlfabeto(char[] Alfabeto) {
+    public void setAlfabeto(ArrayList<Character> Alfabeto) {
         this.Alfabeto = Alfabeto;
     }
 
@@ -50,3 +45,4 @@ public class AFD {//Faltam metodos y atributos
     }
     
 }
+

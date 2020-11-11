@@ -118,7 +118,7 @@ public class Principal {
                     crearAutomataBasico('d');
                     concatenarAutomatas(0, 1);  
                     
-                    convertirAFNaAFD(0);
+                    
                     opcionMenu=-1;
                     break;
                 case 7: //Validar cadena
@@ -174,11 +174,4 @@ public class Principal {
         //listaAFN.add(aux1);
         
     }
-
-    private static void convertirAFNaAFD(int Id) {
-        AFN aux1 = new AFN();        
-        aux1 = listaAFN.get(Id);
-        aux1.convertirAFN();
-    }
-
 }
