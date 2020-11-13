@@ -4,6 +4,7 @@ import com.google.gson.*;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import static java.lang.System.exit;
 import ventanas.*;
 
 public class Principal {
@@ -13,7 +14,6 @@ public class Principal {
     public static int opcionMenu = -1;
     
     public static void main (String[] args){        
-        //Scanner leer = new Scanner(System.in);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         Menu menu = new Menu();
         TablaAFN tablaAFN;
@@ -146,7 +146,8 @@ public class Principal {
                      
                 default:
                     System.out.println("Hasta luego!");
-                    break;
+                    menu.setVisible(false);
+                    exit(0);
             }
         }
     }  
