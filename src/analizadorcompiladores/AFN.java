@@ -509,7 +509,7 @@ public class AFN{
         return 0;
     }
     
-    public Boolean analizarCadena(String cadena){
+    public int analizarCadena(String cadena){
         ArrayList<Estado> Si = new ArrayList<Estado>();  
         Si = cerraduraEpsilon(EdoInicial);
         
@@ -518,12 +518,12 @@ public class AFN{
             Si = cerraduraEpsilon(mover(Si, c));
             
             if(Si.size()==0){//Si el conjunto esta vacio
-                return false;
+                return 0;
             }
         }
         if(TokenInterseccion(Si, this.EdosAceptacion)==0)//Si el token es cero
-            return false;
-        return true;
+            return 0;
+        return TokenInterseccion(Si, this.EdosAceptacion);
     }
     
     public int getIdAFN() {
