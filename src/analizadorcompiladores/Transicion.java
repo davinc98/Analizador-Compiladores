@@ -12,7 +12,8 @@ import java.util.ArrayList;
  * @author J.PEREZ
  */
 public class Transicion {
-    private char Simbolo;
+    private char SimboloI;//Simbolo Inicial 
+    private char SimboloF;//Simolo Final
     private ArrayList<Estado> EdosDestino;
     
     public Transicion(){
@@ -20,12 +21,19 @@ public class Transicion {
     }
     
 
-    public char getSimbolo() {
-        return Simbolo;
+    public char getSimboloI() {
+        return SimboloI;
+    }
+    
+    public char getSimboloF() {
+        return SimboloF;
     }
 
-    public void setSimbolo(char Simbolo) {
-        this.Simbolo = Simbolo;
+    public void setSimboloI(char Simbolo) {
+        this.SimboloI = Simbolo;
+    }
+    public void setSimboloF(char Simbolo) {
+        this.SimboloF = Simbolo;
     }
 
     public ArrayList<Estado> getEdosDestino() {

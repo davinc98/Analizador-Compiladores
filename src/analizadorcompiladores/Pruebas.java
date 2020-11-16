@@ -87,7 +87,18 @@ public class Pruebas {
         AFN aefen = new AFN();
         aefen = unirAFNS(ListaAFN);
         
+        System.out.println("Analizar cadena en AFN: LLLLD");
+        System.out.println("Resultado: "+aefen.analizarCadena("LLLLD"));
+        System.out.println("Analizar cadena en AFN: LDTTLS");
+        System.out.println("Resultado: "+aefen.analizarCadena("LDTTLS"));
+        
         AFD afd = aefen.convertirAFN();
+        
+        
+        System.out.println("ALFABETO AFD");
+        for(Character c: afd.getAlfabeto()){
+            System.out.println(" "+c);
+        }
         
         System.out.println("ESTADOS AFD");
         for(int i=0; i<afd.getEstados().size(); i++){
@@ -95,22 +106,26 @@ public class Pruebas {
             System.out.println("Estado: "+afd.getEstados().get(i).getIdentificador());
             System.out.println("Token: "+afd.getEstados().get(i).getToken());
         }
-//        ArrayList<Estado> R = aefen.cerraduraEpsilon(aefen.getEdoInicial());
-//        aefen.construirSubconjuntos();
         
-        
-//        for(int i=0; i<R.size();i++){
-//            System.out.println("Estado: "+R.get(i).getIdentificador()+" :");
-//        }
-//        System.out.println(gson.toJson(R));
-        
+        //Generar Archivo con la tabla AFD
+        afd.generarArchivoTabla("Prueba1");
+
         
  
     }  
     
+    //Crear el automata con transicion de un caracter
     private static void crearAutomataBasicoAFN(char c){
         AFN afn = new AFN();
         afn.crearBasico(c, ListaAFNBasicos.size());    
+        System.out.println("Automata basico con id:" +afn.getIdAFN()+" creado.");
+        ListaAFNBasicos.add(afn);
+    }
+    
+    //Crear automata con transicion de un intervalo de caracteres
+    private static void crearAutomataBasicoAFN(char c1, char c2){
+        AFN afn = new AFN();
+        afn.crearBasico(c1, c2, ListaAFNBasicos.size());    
         System.out.println("Automata basico con id:" +afn.getIdAFN()+" creado.");
         ListaAFNBasicos.add(afn);
     }

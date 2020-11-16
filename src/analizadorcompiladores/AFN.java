@@ -36,6 +36,8 @@ public class AFN{
     }
     
     //METODOS 
+    
+    //Crear automata con transicion de un carcater
     public void crearBasico(char c, int Id){
         this.IdAFN = Id;
         Alfabeto.add(c);
@@ -51,6 +53,37 @@ public class AFN{
         estado_fin.setEdoFinal(true);
         
         estado_ini.setTransicion(estado_fin, c);
+        
+        this.EstadosAFN.add(estado_ini);
+        this.EstadosAFN.add(estado_fin);
+        this.EdosAceptacion.add(estado_fin);
+    }
+    
+    //Crear automata con transision por intervalo
+    //La funcion recibe el carcater inicial y el final y el Id que se quiere asignar
+    public void crearBasico(char c1, char c2, int Id){
+        //NOTA: Se considera que ya se valido que c1<=c2
+        this.IdAFN = Id;
+        int inicio = (int)c1;
+        int fin = (int)c2;
+        
+        //Agregar al alfabeto
+        for(int i=inicio; i<=fin; i++){
+            char letra = (char)i;
+            Alfabeto.add(letra);
+        }          
+        
+        Estado estado_ini = new Estado();
+        estado_ini.setIdentificador(0);
+        estado_ini.setEdoInicial(true);
+        
+        this.EdoInicial=estado_ini;
+        
+        Estado estado_fin = new Estado();
+        estado_fin.setIdentificador(1);
+        estado_fin.setEdoFinal(true);
+        
+        estado_ini.setTransicion(estado_fin, c1, c2);
         
         this.EstadosAFN.add(estado_ini);
         this.EstadosAFN.add(estado_fin);
@@ -204,14 +237,21 @@ public class AFN{
         while( !s.empty()){
             p= s.pop();
             R.add(p);
-            for(Transicion trans: p.Transiciones){
-                if( trans.getSimbolo() == epsilon  ){
-                    // for para cada uno de los  estados destinos
-                   for(Estado edoDestino:  trans.getEdosDestino()){
-                        if(!R.contains(edoDestino))
-                            s.push(edoDestino);
-                   } 
-                   
+            for(Transicion t: p.Transiciones){
+                //Hay que revisar el intervalo de carcateres
+                int C1 = (int)t.getSimboloI();
+                int C2 = (int)t.getSimboloF();
+                //Suponiendo que un intervalo de caracteres nunca contendra un Epsilon
+                if(C1 == C2){//Revisamos si es un solo caracter
+                    if( C1 == epsilon  ){//Si ese caracter es un Epsilon
+                        
+                        // for para cada uno de los  estados destinos
+                       for(Estado edoDestino:  t.getEdosDestino()){
+                            if(!R.contains(edoDestino))
+                                s.push(edoDestino);
+                       } 
+
+                    }
                 }
             }
         }
@@ -233,8 +273,14 @@ public class AFN{
     ArrayList<Estado> mover( Estado e, char c){
         ArrayList<Estado> R = new ArrayList<Estado>();
         for(Transicion t: e.Transiciones){
-            if(t.getSimbolo()== c){
-                R.addAll(t.getEdosDestino());   //Repeticiones de mismos estados
+            //Recuperar el intervalo de caracteres
+            int C1 = (int)t.getSimboloI();
+            int C2 = (int)t.getSimboloF();
+            
+            int C = (int)c;
+            
+            if(C>=C1 && C<=C2){//Se compara si el caracter esta dentro del intervalo
+                R.addAll(t.getEdosDestino());
             }
         }    
         R = Ordenar(R);
@@ -403,11 +449,17 @@ public class AFN{
         //Creamos una Estado por cada Subconjunto
         for(Subconjunto S: R){
             Estado E = new Estado();
-            E.setIdentificador(afd.getEstados().size());
+            
+            E.setIdentificador(S.getId());
             
             //TOKEN
             int Token = TokenInterseccion(S.getEstados(), EdosAceptacion);            
             E.setToken(Token);
+            
+            //Nota: Dado que el proceso de conversion es con tomson, la interseccion de 
+            //cada Si con los edosAceptacion dara siempre un solo estado
+            //Osea solo se tendra un solo TOKEN, si se encontrase mas de una
+            //interseccion habria ambiguedad
             
             afd.getEstados().add(E);
         }
@@ -416,19 +468,26 @@ public class AFN{
         afd.getEstados().get(0).setEdoInicial(true);
         afd.setEdoInicial(afd.getEstados().get(0));
         
-        //Colocar TRANSICIONES a cada Estado
+        //Crear TRANSICIONES a cada Estado
         for(int i=0; i<R.size();i++){
             ArrayList<Estado> Estados = new ArrayList<Estado>(); 
             for(char c: Alfabeto){
                  Estados = irA(R.get(i).getEstados(),c);
+                             
                  if(Estados.size()>0){//Revisar si es VACIO
                      
                      //Crear transicion por cada estado
                      for(Estado E: Estados){
+                         
                          afd.getEstados().get(i).setTransicion(E, c);
                      }
                 }
             }
+        }
+        
+        //Reasignacion de identificadores
+        for(int i=0;i<afd.getEstados().size();i++){
+            afd.getEstados().get(i).setIdentificador(i);
         }
         
         return afd;
@@ -450,12 +509,20 @@ public class AFN{
         return 0;
     }
     
-    Boolean analizarCadena(String s){
-        ArrayList<Estado> E = new ArrayList<Estado>();  
-        E = cerraduraEpsilon(EdoInicial);
+    public Boolean analizarCadena(String cadena){
+        ArrayList<Estado> Si = new ArrayList<Estado>();  
+        Si = cerraduraEpsilon(EdoInicial);
         
-        //FALTA
-        
+        for(int i=0; i<cadena.length();i++){
+            char c = cadena.charAt(i);
+            Si = cerraduraEpsilon(mover(Si, c));
+            
+            if(Si.size()==0){//Si el conjunto esta vacio
+                return false;
+            }
+        }
+        if(TokenInterseccion(Si, this.EdosAceptacion)==0)//Si el token es cero
+            return false;
         return true;
     }
     
@@ -476,10 +543,6 @@ public class AFN{
     }
 
     public void setEstadosAFN(ArrayList<Estado> EstadosAFN) {
-//        //remover estados repetidos agregar los demas
-//       EstadosAFN.removeAll(this.EstadosAFN);
-//        this.EstadosAFN.addAll( EstadosAFN);
-//        
         this.EstadosAFN = EstadosAFN;
     }
     
@@ -489,6 +552,7 @@ public class AFN{
         }
         
     }
+    
     
     public Estado getEdoInicial() {
         return EdoInicial;
