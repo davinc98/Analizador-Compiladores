@@ -33,7 +33,7 @@ public class Pruebas {
         crearAutomataBasicoAFN('M');//7
         crearAutomataBasicoAFN('P');//8
         crearAutomataBasicoAFN('E');//9
-        crearAutomataBasicoAFN('T');//10
+        crearAutomataBasicoAFN('T','V');//10
         
         //Acciones
         

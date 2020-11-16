@@ -373,6 +373,29 @@ public class AFN{
         return agregado;//False si no hay coincidencias
     }
     
+    //Verifica si el conjunto de estados Cn es el mismo del subconjunto Si 
+    //True si el conjuto de estados ya ha sido agregado
+    Boolean contiene(Subconjunto S, ArrayList<Estado> Cn){
+        
+        Boolean agregado = false;
+           
+            ArrayList<Estado> C = S.getEstados();            
+            if(C.size() == Cn.size()){
+                boolean equiv = true;
+                for(int i=0;i<Cn.size();i++){
+                    if(C.get(i).getIdentificador() != Cn.get(i).getIdentificador()){
+                        equiv = false;
+                        break;
+                    }                    
+                }
+                if(equiv == true){
+                    agregado = true;
+                }
+            }    
+      
+        return agregado;//False si no hay coincidencias
+    }
+    
     //Metodos
     public ArrayList<Subconjunto> construirSubconjuntos(){
         ArrayList<Subconjunto> R = new ArrayList<Subconjunto>();
@@ -469,18 +492,35 @@ public class AFN{
         afd.setEdoInicial(afd.getEstados().get(0));
         
         //Crear TRANSICIONES a cada Estado
-        for(int i=0; i<R.size();i++){
+        for(int i=0; i<R.size();i++){//Por cada subconjunto
+            
             ArrayList<Estado> Estados = new ArrayList<Estado>(); 
+            
             for(char c: Alfabeto){
                  Estados = irA(R.get(i).getEstados(),c);
                              
-                 if(Estados.size()>0){//Revisar si es VACIO
+                 if(Estados.size()>0){//Si el subconjunto no es vacio
                      
-                     //Crear transicion por cada estado
-                     for(Estado E: Estados){
-                         
-                         afd.getEstados().get(i).setTransicion(E, c);
-                     }
+                    //Hay que recuperar el identificador del suconjunto que coincida
+                    //con los estados recuperados
+                    int identific=-1;
+                    for(Subconjunto SI: R){
+                        if(contiene(SI, Estados)){//Si se encuentra coincidencia
+                            identific = SI.getId();
+                            break;
+                        }
+                    }
+                    
+                    //Hay que crear UNA transicion al estado del afd que conincida con
+                    //el identificador del subconjunto encontrado
+                    for(Estado e: afd.getEstados()){
+                        if(e.getIdentificador()==identific){
+                            //Se crea la transicion al estado que coincida con el identificador
+                            afd.getEstados().get(i).setTransicion(e, c);
+                            break;
+                        }
+                            
+                    }
                 }
             }
         }
@@ -493,7 +533,7 @@ public class AFN{
         return afd;
     }
     
-    
+  
     //Verifica si hay algun estado del Conjunto S, en los Estados Finales
     //Y regresa el token de la primera interseccion
     int TokenInterseccion(ArrayList<Estado> S, ArrayList<Estado> F){
@@ -575,6 +615,8 @@ public class AFN{
     public void setEdosAceptacion(ArrayList<Estado> EdosAceptacion) {
         this.EdosAceptacion = EdosAceptacion;
     }
+
+    
 }
 
 
