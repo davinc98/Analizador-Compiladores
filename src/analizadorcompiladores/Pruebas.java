@@ -113,7 +113,6 @@ public class Pruebas {
         ArrayList<ArrayList<Integer>> tablaAFD = afd.getArrayTabla();
         
         System.out.println("CONTENIDO DEL ARRAY DE LA TABLA AFD");
-        System.out.printf("");
         for(int i=0; i<tablaAFD.size(); i++){
             //
             for(int j=0; j<tablaAFD.get(i).size(); j++){

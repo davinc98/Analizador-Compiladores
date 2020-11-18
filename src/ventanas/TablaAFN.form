@@ -99,9 +99,9 @@
               <Table columnCount="5" rowCount="0">
                 <Column editable="true" title="ID" type="java.lang.Object"/>
                 <Column editable="true" title="Alfabeto" type="java.lang.Object"/>
-                <Column editable="true" title="Transiciones" type="java.lang.Object"/>
-                <Column editable="true" title="Edo Inicial" type="java.lang.Object"/>
-                <Column editable="true" title="Edo Final" type="java.lang.Object"/>
+                <Column editable="true" title="Estados" type="java.lang.Object"/>
+                <Column editable="true" title="EdoInicial" type="java.lang.Object"/>
+                <Column editable="true" title="EdosFinales" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">

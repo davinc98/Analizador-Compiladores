@@ -1,27 +1,22 @@
 package ventanas;
 
+import javax.swing.JOptionPane;
+
 public class CrearBasico extends javax.swing.JFrame {
+    public static boolean volver = false;
     public char c1 = '-';
     public char c2 = '-';
-    public static boolean volver = false;
     
     public CrearBasico() {
         initComponents();
-        this.setVisible(true);
-        this.inicializar();
-    }
-    public char c1(){
-        return c1;
-    }
-    public char c2(){
-        return c2;
-    }
-    public void inicializar(){
         jTextField1.setText("");
         jTextField2.setText("");
         c1 = '-'; c2 = '-';
         volver = false;
+        this.setVisible(true);
     }
+    public char c1(){ return c1; }
+    public char c2(){ return c2; }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -153,9 +148,15 @@ public class CrearBasico extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        c1 = jTextField1.getText().charAt(0);
-        c2 = jTextField2.getText().charAt(0);
-        System.out.println("recibo c1:"+c1+" c2:"+c2);
+        char auxc1 = jTextField1.getText().charAt(0);
+        char auxc2 = jTextField2.getText().charAt(0);
+        if(auxc1>auxc2){
+            JOptionPane.showMessageDialog(this, "El segundo caracter es más grande que el primero");
+            jTextField1.setText("");
+            jTextField2.setText("");
+        } else {
+            c1 = auxc1; c2 = auxc2;
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
