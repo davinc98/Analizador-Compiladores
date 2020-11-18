@@ -119,7 +119,7 @@ public class AnalizadorLexico {
                  break;
              }
          }
-      
+         
         if(posSimbolo>=0){ // si se encontreo el simbolo en el alfabeto
           ArrayList<Integer> Si = this.getTablaAutomata().get( edo+1  ); // del Si solicitado 
           
