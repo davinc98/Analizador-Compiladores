@@ -1,8 +1,10 @@
 package analizadorcompiladores;
 
+import java.util.ArrayList;
+
 public class AnalizadorLexico {
     
-    private AFN tablaAutomata;
+    private  ArrayList<ArrayList<Integer>>  tablaAutomata;
     private int  caracterActual=0;
     private int InicioLExema=0;
     private int finLexema=-1;
@@ -16,8 +18,8 @@ public class AnalizadorLexico {
     public AnalizadorLexico(){ }
     
     //Comentario de prueba
-    public AnalizadorLexico(AFN tabla, String cadena  ){
-        this.setTablaAutomata(tabla);
+    public AnalizadorLexico(AFD automata, String cadena  ){
+        this.setTablaAutomata( automata.getArrayTabla() ); //obtiene la tabla de transiciones  del automata
         this.setCadena2Analizar(cadena);
  
     }
@@ -42,11 +44,11 @@ public class AnalizadorLexico {
     }
     private String yyText;
 
-    public AFN getTablaAutomata() {
+    public ArrayList<ArrayList<Integer>> getTablaAutomata() {
         return tablaAutomata;
     }
 
-    public void setTablaAutomata(AFN tablaAutomata) {
+    public void setTablaAutomata(ArrayList<ArrayList<Integer>> tablaAutomata) {
         this.tablaAutomata = tablaAutomata;
     }
 
@@ -82,7 +84,7 @@ public class AnalizadorLexico {
         this.ultimoEdoAcept = ultimoEdoAcept;
     }
 
-    public int getToken() {
+    private int getToken() {
         return token;
     }
 
@@ -94,25 +96,44 @@ public class AnalizadorLexico {
         return yyText;
     }
 
-    public void setYyText(String yyText) {
+    private void setYyText(String yyText) {
         this.yyText = yyText;
     }
     
     
     
-    //evalua un simbolo en un estado, regresando a que estado manda 
+    //devuelve al estado qeu se manda en un estado con un simbolo   d(edo, sym) 
    
     private int EvaluarSimbolo(int edo, int  simbolo){
          //en el estado actual a que estado vamos con simbolo
          
+         char caracterAnalizar =  this.getCadena2Analizar().charAt(simbolo); //el caracter del string a analizar en la posicion  indicada
         
-        return 0;
+         
+         int posSimbolo = -1; //posiSion del SImbolo en el SAlfabeto
+         ArrayList<Integer> Alfabeto = this.getTablaAutomata().get( 0  ); //se pone el alfabeto en el primer elemento
+         for(int i=0;i> Alfabeto.size() ; i++ ){ // recorrer el alfabeto
+             char symActual =  Character.toChars(Alfabeto.get(i)  )[0]; //el caracter en ela posicion i del alfabeto
+             if(symActual ==caracterAnalizar ){ 
+                 posSimbolo =i;
+                 break;
+             }
+         }
+      
+        if(posSimbolo>=0){ // si se encontreo el simbolo en el alfabeto
+          ArrayList<Integer> Si = this.getTablaAutomata().get( edo+1  ); // del Si solicitado 
+          
+          return Si.get( posSimbolo );
+         
+        } 
+         
+        return -1;
     }
     
     
-    private int getToken4Edo(int Edo){ //devuelve el token de un estado
-    
-        return 0;
+    private int getToken4Edo(int edo){ //devuelve el token de un estado
+         ArrayList<Integer> Si = this.getTablaAutomata().get( edo+1  ); // del Si solicitado 
+        return Si.get(Si.size()-1);  // devolver el ulrimo elemento de si (token)
     }
     
     
@@ -134,7 +155,7 @@ public class AnalizadorLexico {
                   int tokenEdoAct = this.getToken4Edo( this.getEdoActual());
                 if( tokenEdoAct  >0  ){ 
                     this.setUltimoEdoAcept(true); //guardamos que pasamos por un estado de aceptacion
-                    this.setFinLexema( this.getEdoActual() ); //marcamos fin del lexema
+                    this.setFinLexema( this.getCaracterActual() -1 ); //marcamos fin del lexema
                     this.setToken(  tokenEdoAct  ); // guardar el token del estado actual
                     // recordar tambien la accion asociada a ese estado (?)
                 }
@@ -152,28 +173,18 @@ public class AnalizadorLexico {
                     this.setInicioLExema( this.getCaracterActual()  );
                     this.setFinLexema(-1);
                     this.setUltimoEdoAcept(false);
-                    return this.getToken();
-                     //recuerdo el estaoo de aceptacion
+                    //recuerdo el estaoo de aceptacion
                     //regresar token respectivo
+                    return this.getToken();
+                     
                 
                 }else{//si no  pasamos por un estado de aceptacion
                     //descartar el lexema actual 
                     //estadoActual =0   
                     //error
                     return -1;
-                }
-               
-               
-           
-           
-           
-           
-           }
-           
-           
-           
-           
-       
+                }                      
+           }                                        
        }
        
         
