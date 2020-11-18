@@ -1,25 +1,26 @@
 package ventanas;
 
+import analizadorcompiladores.Estado;
 import analizadorcompiladores.Principal;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class TablaAFN extends javax.swing.JFrame {
+    public static boolean volver = false;
     int accion = -1;
     int v1,v2 = -1;
-    public static boolean volver = false;
     
-    public TablaAFN() {
+    public TablaAFN(){}
+    public TablaAFN(int accion) {
         initComponents();
-        this.setVisible(true);
-    }
-    
-    public void inicializar(int accion) {
         v1=-1;v2=-1;
+        volver = false;
         jTextField1.setText("");
         jTextField2.setText("");
-        volver = false;
         setAccionActual(accion);
         actualizarTabla();
+        this.setVisible(true);
     }
     public void setAccionActual(int accion){
         this.accion = accion; 
@@ -32,22 +33,25 @@ public class TablaAFN extends javax.swing.JFrame {
         jLabel2.setText(valor);
     }
     public void actualizarTabla(){
-        DefaultTableModel modelo = 
-                (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+        ArrayList <Estado> auxListaEstados;
+        ArrayList <Estado> auxEdoFinales;
         
         for(int i=0;i<Principal.listaAFN.size();i++){
+            auxListaEstados = Principal.listaAFN.get(i).getEstadosAFN();
+            auxEdoFinales = Principal.listaAFN.get(i).getEdosAceptacion();
+            
             String[] fila = new String[5];
             fila[0] = Principal.listaAFN.get(i).getIdAFN()+"";
             fila[1] = Principal.listaAFN.get(i).getAlfabeto().toString();
-            for(int j=0;j<Principal.listaAFN.get(i).getEstadosAFN().size();j++){
-                //fila[2] = Principal.listaAFN.get(i).getEstadosAFN().get(j).getIdentificador()+", ";
-                fila[2] = "En proceso";
-            }
             fila[3] = Principal.listaAFN.get(i).getEdoInicial().getIdentificador()+"";
-//            for(int j=0;j<Principal.listaAFN.get(i).getEdosAceptacion().size();j++){
-//                //fila[4] = Principal.listaAFN.get(i).getEdosAceptacion().get(j).getIdentificador()+", ";
-//                fila[4] = "En proceso";
-//            }
+            fila[2] = ""; fila[4] = "";
+            for(int j=0;j<auxListaEstados.size();j++){
+                fila[2] = fila[2]+auxListaEstados.get(j).getIdentificador()+", ";
+            }
+            for(int j=0;j<auxEdoFinales.size();j++){
+                fila[4] = fila[4]+auxEdoFinales.get(j).getIdentificador()+", ";
+            }
             modelo.addRow(fila);
         }
     }
@@ -77,7 +81,7 @@ public class TablaAFN extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Alfabeto", "Transiciones", "Edo Inicial", "Edo Final"
+                "ID", "Alfabeto", "Estados", "EdoInicial", "EdosFinales"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -183,13 +187,21 @@ public class TablaAFN extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        v1 = Integer.valueOf(jTextField1.getText());
-        v2 = Integer.valueOf(jTextField2.getText());
-        System.out.println("v1:"+v1+" y v2:"+v2);
+        String auxv1 = jTextField1.getText();
+        String auxv2 = jTextField2.getText();
+        
+        if(auxv1.equals("") || auxv2.equals("")){
+            JOptionPane.showMessageDialog(this, "Verifica los datos antes de enviar");
+            jTextField1.setText("");
+            jTextField2.setText("");
+        }else {
+            v1 = Integer.valueOf(auxv1);
+            v2 = Integer.valueOf(auxv2);
+            System.out.println("v1:"+v1+" y v2:"+v2);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        System.out.println("Boton en proceso jajaja");
         volver = true;
     }//GEN-LAST:event_jButton2ActionPerformed
 

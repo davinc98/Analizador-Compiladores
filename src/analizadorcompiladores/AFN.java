@@ -175,7 +175,7 @@ public class AFN{
                 
         //Crear una transicion epsilon del estado final al inicial de AFN
         for(Estado e: EdosAceptacion){
- e.setTransicion(EdoInicial, epsilon);
+            e.setTransicion(EdoInicial, epsilon);
             e.setTransicion(nuevo_edo_fin, epsilon);
             e.setEdoFinal(false);
         }
@@ -205,7 +205,7 @@ public class AFN{
                 
         //Crear una transicion epsilon del estado final al inicial de AFN
         for(Estado e: EdosAceptacion){
- e.setTransicion(EdoInicial, epsilon);
+            e.setTransicion(EdoInicial, epsilon);
             e.setTransicion(nuevo_edo_fin, epsilon);
             e.setEdoFinal(false);
         }
@@ -227,7 +227,7 @@ public class AFN{
     }
     
     //OPERACIONES   
-     ArrayList<Estado> cerraduraEpsilon(Estado e){        
+    ArrayList<Estado> cerraduraEpsilon(Estado e){        
         Stack<Estado> s = new Stack();
         ArrayList<Estado>  R= new ArrayList<Estado>();
         Estado p = new Estado();
@@ -259,7 +259,7 @@ public class AFN{
         return R;
     }
     
-     ArrayList <Estado> cerraduraEpsilon(ArrayList<Estado> c){
+    ArrayList <Estado> cerraduraEpsilon(ArrayList<Estado> c){
         ArrayList<Estado > R = new ArrayList<Estado>();
         for(Estado e:c){
             R.addAll( cerraduraEpsilon(e));
@@ -606,10 +606,7 @@ public class AFN{
     public void setAlfabeto(ArrayList<Character> Alfabeto) {
         this.Alfabeto = Alfabeto;
     }
-    Estado getEstadoInicial(){
-        return EdoInicial;
-    }
-    ArrayList<Estado> getEdosAceptacion(){
+    public ArrayList<Estado> getEdosAceptacion(){
         return EdosAceptacion;
     } 
     public void setEdosAceptacion(ArrayList<Estado> EdosAceptacion) {
