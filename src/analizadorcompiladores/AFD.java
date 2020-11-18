@@ -145,6 +145,57 @@ public class AFD {//Faltam metodos y atributos
         }        
         return agregado;//False si no hay coincidencias
     }
+
+    //Regresa la tabla AFD en un arreglo bidimencional
+    public ArrayList<ArrayList<Integer>> getArrayTabla() {
+        ArrayList<ArrayList<Integer>> tablaAFD = new ArrayList<ArrayList<Integer>>();
+        //La tabla tiene la sifuiente forma
+        /*
+        -El primer array list sera el alfabeto en su valor entero del ascii
+        
+        Encabezado:     L   D   .   ... T
+        Est Ini 0       1   2   -1      6               0
+        Est 1           7   8   -1      -1              10
+        Est 2
+        ...
+        Est n           
+        
+        -El ultimo elemento de cada arraylist de un estado sera el valor del token
+         */
+
+        //El alfabeto se agrega a la tabla con su valor entero en ASCII
+        ArrayList<Integer> Encabezado = new ArrayList<Integer>();
+        for (Character c : Alfabeto) {
+            Encabezado.add((int) c);
+        }
+
+        tablaAFD.add(Encabezado);
+
+        ArrayList<Estado> Si = new ArrayList<Estado>();
+        for (int i = 0; i < Estados.size(); i++) {//Recorrer cada estado
+            ArrayList<Integer> Estadoi = new ArrayList<Integer>();
+
+            System.out.println("Estado a analizar: " + Estados.get(i).getIdentificador());
+            for (char c : Alfabeto) {
+                Si = mover(Estados.get(i), c);
+                if (Si.size() == 0) {//Si el conjunto esta vacio
+                    Estadoi.add(-1);
+                } else {
+                    System.out.println("--->" + c + "=" + Si.get(0).getIdentificador());
+                    //Vamos a suponer que SIEMPRE regresara solo un estado
+                    Estadoi.add(Si.get(0).getIdentificador());
+                }
+            }
+            Estadoi.add(Estados.get(i).getToken());
+
+            //Agregar estado a la tablaAFD
+            tablaAFD.add(Estadoi);
+        }
+
+        return tablaAFD;
+    }
+    
+    
     
 
     public Estado getEdoInicial() {

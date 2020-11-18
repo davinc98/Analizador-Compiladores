@@ -110,7 +110,17 @@ public class Pruebas {
         //Generar Archivo con la tabla AFD
         afd.generarArchivoTabla("Prueba1");
 
+        ArrayList<ArrayList<Integer>> tablaAFD = afd.getArrayTabla();
         
+        System.out.println("CONTENIDO DEL ARRAY DE LA TABLA AFD");
+        System.out.printf("");
+        for(int i=0; i<tablaAFD.size(); i++){
+            //
+            for(int j=0; j<tablaAFD.get(i).size(); j++){
+                System.out.print(" "+tablaAFD.get(i).get(j));
+            }
+            System.out.println("");
+        }
  
     }  
     
@@ -205,6 +215,6 @@ public class Pruebas {
         }
         return Final;
     }
-
-
+    
+  
 }
