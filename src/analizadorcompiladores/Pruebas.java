@@ -120,6 +120,27 @@ public class Pruebas {
             }
             System.out.println("");
         }
+        
+        //Prueba Analizador Léxico Aacini
+        System.out.println("Analizador léxico para afd con DD.DDTTLLDEMEEP");
+        AnalizadorLexico lexico = new AnalizadorLexico(afd,"DD.DDTTLLDEMEEP" );                   
+        int r;
+        while( (r = lexico.yylex() ) != -1   ){
+            System.out.println("El token es "+r );
+            System.out.println("El  lexema es: "+lexico.getYyText() );
+        } 
+        while( (r = lexico.regresarToken() ) != 0   ){
+            System.out.println("Regresando apuntador actual  a  "+r );  
+        }
+        System.out.println("Regresando apuntador actual  a  "+r );
+        
+        lexico.regresarToken();
+        
+        while( (r = lexico.yylex() ) != -1   ){
+            System.out.println("El token es "+r );
+            System.out.println("El  lexema es: "+lexico.getYyText() );
+            
+        }
  
     }  
     

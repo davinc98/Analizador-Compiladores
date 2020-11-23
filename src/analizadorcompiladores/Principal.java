@@ -18,6 +18,7 @@ public class Principal {
     
     public static void main (String[] args){        
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        AFN union = new AFN();
         
         //Interfaces
         Menu menu = new Menu();
@@ -25,6 +26,8 @@ public class Principal {
         TablaAFN tablaAFN;
         TablaAFD tablaAFD;
         Cerradura cerr;
+        Token tok;
+        AnalizarCadenaAFN cadenaAFN;
         
         //Menu
         while(true){
@@ -117,11 +120,50 @@ public class Principal {
                     listaAFN.add(automataGuardar);*/
                     opcionMenu=-1;
                     break;
-                case 7: //Analizador Léxico
+                case 7: //Token
+                    menu.setVisible(false);
+                    tok = new Token();
+                    
+                    while(tok.id()==-1 || tok.token()==-1){
+                        System.out.print("");
+                        if(tok.volver) break;
+                    }
+                    if(!tok.volver) asignarToken(tok.id(),tok.token());
+                    
+                    tok.setVisible(false);
+                    menu.setVisible(true);
+                    break;  
+                case 8: //Unir todos los AFN
+                    int op = JOptionPane.showConfirmDialog(null, "¿Seguro que deseas unir todos los AFN?");
+                    if(op==JOptionPane.YES_OPTION){
+                        union = unirAFNS(listaAFN);
+                        listaAFN.clear();
+                        listaAFN.add(union);
+                        JOptionPane.showMessageDialog(null, "¡AFN unidos!");
+                    } else  JOptionPane.showMessageDialog(null, "No se unieron los AFN");
                     break;
-                case 8: //Convertir AFN a AFD
+                case 9: //Analizar cadena usando AFN
+                    menu.setVisible(false);
+                    cadenaAFN = new AnalizarCadenaAFN();
+                    
+                    while(cadenaAFN.id()==-1 || cadenaAFN.cadena()==null){
+                        System.out.print("");
+                        if(cadenaAFN.volver) break;
+                    }
+                    if(!cadenaAFN.volver) {
+                        if(analizarCadenaAFN(cadenaAFN.id(),cadenaAFN.cadena()) != 0){
+                            JOptionPane.showMessageDialog(null, "¡Cadena Aceptada!");
+                        } else JOptionPane.showMessageDialog(null, "Cadena no válida");
+                    }
+                    
+                    cadenaAFN.setVisible(false);
+                    menu.setVisible(true);
+                    break;    
+                case 10: //Convertir AFN a AFD
                     break;
-                case 9: //Validar cadena
+                case 11: //Analizador Léxico
+                    break;
+                case 12: //Validar cadena
                     menu.setVisible(false);
                     tablaAFD = new TablaAFD();
                     tablaAFD.inicializar();
@@ -138,9 +180,9 @@ public class Principal {
                     tablaAFD.setVisible(false);
                     menu.setVisible(true);
                     break;   
-                case 10: //Crear AFD usando ER
+                case 13: //Crear AFD usando ER
                     break;
-                case 11: //copiar array list AFN  json en el portapapeles     
+                case 14: //copiar array list AFN  json en el portapapeles     
                     StringSelection ss = new StringSelection(gson.toJson(listaAFN));
                     Toolkit tool = Toolkit.getDefaultToolkit();
                     Clipboard clip = tool.getSystemClipboard();
@@ -195,6 +237,12 @@ public class Principal {
     }
     public static void cerraduraDeKleene(int id){
         listaAFN.get(id).cerraduradeKleene();
+    }
+    public static void asignarToken(int id,int token){
+        listaAFN.get(id).getEdosAceptacion().get(0).setToken(token);
+    }
+    public static int analizarCadenaAFN(int id,String cadena){
+        return listaAFN.get(id).analizarCadena(cadena);
     }
     public static AFN unirAFNS(ArrayList<AFN> AFNS){//Union de AFN sin estado final comun
         AFN Final = new AFN();//Contendra todos los afn unidos
