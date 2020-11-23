@@ -123,8 +123,11 @@ public class Pruebas {
         
         //Prueba Analizador Léxico Aacini
         System.out.println("Analizador léxico para afd con DD.DDTTLLDEMEEP");
-        AnalizadorLexico lexico = new AnalizadorLexico(afd,"DD.DDTTLLDEMEEP" );                   
+        AnalizadorLexico lexico = new AnalizadorLexico(afd,".DD.DDTTLLDEMEEP" );                   
         int r;
+        r = lexico.yylex();        
+        System.out.println("r: "+r+" lexema: "+lexico.getYyText());
+        
         while( (r = lexico.yylex() ) != -1   ){
             System.out.println("El token es "+r );
             System.out.println("El  lexema es: "+lexico.getYyText() );
@@ -136,6 +139,8 @@ public class Pruebas {
         
         lexico.regresarToken();
         
+        r = lexico.yylex();        
+        System.out.println("r: "+r+" lexema: "+lexico.getYyText());
         while( (r = lexico.yylex() ) != -1   ){
             System.out.println("El token es "+r );
             System.out.println("El  lexema es: "+lexico.getYyText() );
