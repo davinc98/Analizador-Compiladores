@@ -30,7 +30,7 @@ public class AnalizarCadenaAFN extends javax.swing.JFrame {
             auxEdoFinales = Principal.listaAFN.get(i).getEdosAceptacion();
             
             String[] fila = new String[5];
-            fila[0] = Principal.listaAFN.get(i).getIdAFN()+"";
+            fila[0] = i+"";//Principal.listaAFN.get(i).getIdAFN()+"";
             fila[1] = Principal.listaAFN.get(i).getAlfabeto().toString();
             fila[2] = ""; fila[3] = ""; fila[4]="";
             for(int j=0;j<auxListaEstados.size();j++){

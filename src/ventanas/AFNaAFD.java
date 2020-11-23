@@ -28,7 +28,7 @@ public class AFNaAFD extends javax.swing.JFrame {
             auxEdoFinales = Principal.listaAFN.get(i).getEdosAceptacion();
             
             String[] fila = new String[7];
-            fila[0] = Principal.listaAFN.get(i).getIdAFN()+"";
+            fila[0] = i+"";//Principal.listaAFN.get(i).getIdAFN();
             fila[1] = Principal.listaAFN.get(i).getAlfabeto().toString();
             fila[3] = Principal.listaAFN.get(i).getEdoInicial().getIdentificador()+"";
             

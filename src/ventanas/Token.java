@@ -31,7 +31,7 @@ public class Token extends javax.swing.JFrame {
             auxListaEstados = Principal.listaAFN.get(i).getEstadosAFN();
             
             String[] fila = new String[4];
-            fila[0] = Principal.listaAFN.get(i).getIdAFN()+"";
+            fila[0] = i+"";//Principal.listaAFN.get(i).getIdAFN()+"";
             fila[1] = Principal.listaAFN.get(i).getAlfabeto().toString();
             fila[2] = "";
             for(int j=0;j<auxListaEstados.size();j++){

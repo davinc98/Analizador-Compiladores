@@ -41,7 +41,7 @@ public class TablaAFN extends javax.swing.JFrame {
             auxEdoFinales = Principal.listaAFN.get(i).getEdosAceptacion();
             
             String[] fila = new String[5];
-            fila[0] = Principal.listaAFN.get(i).getIdAFN()+"";
+            fila[0] = i+"";//Principal.listaAFN.get(i).getIdAFN()+"";
             fila[1] = Principal.listaAFN.get(i).getAlfabeto().toString();
             fila[3] = Principal.listaAFN.get(i).getEdoInicial().getIdentificador()+"";
             fila[2] = ""; fila[4] = "";

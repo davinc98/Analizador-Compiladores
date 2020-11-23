@@ -174,6 +174,17 @@ public class Principal {
                     menu.setVisible(true);
                     break;
                 case 11: //Analizador Léxico
+                    menu.setVisible(false);
+                    tablaAFD = new TablaAFD();
+
+                    while(tablaAFD.cadena().equals("") || tablaAFD.id()==-1){
+                        System.out.print("");
+                        if(tablaAFD.volver) break;
+                    }
+                    if(!tablaAFD.volver) imprimeAnalizadorLexico(tablaAFD.id(),tablaAFD.cadena());
+                    
+                    tablaAFD.setVisible(false);
+                    menu.setVisible(true);
                     break;
                 case 12: //Validar cadena usando AFD
                     menu.setVisible(false);
@@ -245,6 +256,20 @@ public class Principal {
     public static void convertirAFNaAFD(int id){
         AFD afdnuevo = listaAFN.get(id).convertirAFN();
         listaAFD.add(afdnuevo);
+    }
+    public static AnalizadorLexico getAnalizadorLexico(int id,String cadena){
+         AnalizadorLexico lexico = new AnalizadorLexico(listaAFD.get(id),cadena); 
+         return lexico;
+    }
+    public static void imprimeAnalizadorLexico(int id,String cadena){
+        AnalizadorLexico lexico = new AnalizadorLexico(listaAFD.get(id),cadena);   
+        String aux_resultado = "";        
+        int r;
+        while( (r = lexico.yylex() ) != -1 ){
+            System.out.println("Token: "+r+" || Lexema: "+lexico.getYyText() );
+            aux_resultado = aux_resultado + "Token: "+r+" || Lexema: "+lexico.getYyText()+"\n";
+        }
+        JOptionPane.showMessageDialog(null, aux_resultado);
     }
     public static AFN unirAFNS(ArrayList<AFN> AFNS){//Union de AFN sin estado final comun
         AFN Final = new AFN();//Contendra todos los afn unidos
