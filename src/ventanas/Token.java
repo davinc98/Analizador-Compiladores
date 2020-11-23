@@ -110,7 +110,7 @@ public class Token extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Asgnar Token");
+        jButton2.setText("Asignar Token");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);

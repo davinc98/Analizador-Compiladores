@@ -28,6 +28,7 @@ public class Principal {
         Cerradura cerr;
         Token tok;
         AnalizarCadenaAFN cadenaAFN;
+        AFNaAFD afn_afd;
         
         //Menu
         while(true){
@@ -160,23 +161,32 @@ public class Principal {
                     menu.setVisible(true);
                     break;    
                 case 10: //Convertir AFN a AFD
+                    menu.setVisible(false);
+                    afn_afd = new AFNaAFD();
+                    
+                    while(afn_afd.id()==-1){
+                        System.out.print("");
+                        if(afn_afd.volver) break;
+                    }
+                    if(!afn_afd.volver) convertirAFNaAFD(afn_afd.id());
+                    
+                    afn_afd.setVisible(false);
+                    menu.setVisible(true);
                     break;
                 case 11: //Analizador Léxico
                     break;
-                case 12: //Validar cadena
+                case 12: //Validar cadena usando AFD
                     menu.setVisible(false);
                     tablaAFD = new TablaAFD();
-                    tablaAFD.inicializar();
-                    while(tablaAFD.cadena.equals("") || tablaAFD.numAFD==-1){
+
+                    while(tablaAFD.cadena().equals("") || tablaAFD.id()==-1){
                         System.out.print("");
                         if(tablaAFD.volver) break;
                     }
                     if(!tablaAFD.volver){
-                        System.out.println("Cadena:"+tablaAFD.cadena+" num:"+tablaAFD.numAFD);
-                        
-                        //Codigo para validar cadena
-                        
+                        JOptionPane.showMessageDialog(null, "Falta agregar el Analizador Léxico xD");
                     }
+                    
                     tablaAFD.setVisible(false);
                     menu.setVisible(true);
                     break;   
@@ -213,22 +223,10 @@ public class Principal {
         listaAFN.add(afn);
     }
     public static void unirAutomatas(int Id1, int Id2) {
-        //AFN aux1 = new AFN();
-        //AFN aux2 = new AFN();
-        //aux1 = listaAFN.get(Id1).Duplicar();
-        //aux2 = listaAFN.get(Id2).Duplicar();            
-        //aux1.unirAFN(aux2);
-        //listaAFN.add(aux1);
         listaAFN.get(Id1).unirAFN(listaAFN.get(Id2));
         listaAFN.remove(Id2);
     }
     public static void concatenarAutomatas(int Id1, int Id2) {
-        //AFN aux1 = new AFN();
-        //AFN aux2 = new AFN();
-        //aux1 = listaAFN.get(Id1).Duplicar();
-        //aux2 = listaAFN.get(Id2).Duplicar();             
-        //aux1.concatenarAFN(aux2);
-        //listaAFN.add(aux1);
         listaAFN.get(Id1).concatenarAFN(listaAFN.get(Id2));
         listaAFN.remove(Id2);
     }
@@ -243,6 +241,10 @@ public class Principal {
     }
     public static int analizarCadenaAFN(int id,String cadena){
         return listaAFN.get(id).analizarCadena(cadena);
+    }
+    public static void convertirAFNaAFD(int id){
+        AFD afdnuevo = listaAFN.get(id).convertirAFN();
+        listaAFD.add(afdnuevo);
     }
     public static AFN unirAFNS(ArrayList<AFN> AFNS){//Union de AFN sin estado final comun
         AFN Final = new AFN();//Contendra todos los afn unidos

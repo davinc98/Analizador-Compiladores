@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class AnalizarCadenaAFN extends javax.swing.JFrame {
-public static boolean volver = false;
+    public static boolean volver = false;
     int idAFN = -1;
     String cadena = null;
     
@@ -24,7 +24,6 @@ public static boolean volver = false;
     public void actualizarTabla(){
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         ArrayList <Estado> auxListaEstados, auxEdoFinales;
-        int token_aux,token_cadena;
         
         for(int i=0;i<Principal.listaAFN.size();i++){
             auxListaEstados = Principal.listaAFN.get(i).getEstadosAFN();
@@ -43,9 +42,6 @@ public static boolean volver = false;
                 fila[4] = fila[4]+auxEdoFinales.get(j).getToken()+", ";
             }
             if(fila[4].equals("")) fila[4] = "No hay tokens";
-            //token_aux = auxEdoFinales.get(0).getToken();
-            //if(token_aux!=0) fila[4] = token_aux+"";
-            //else fila[4] = "No hay token aún";
             modelo.addRow(fila);
         }
     }
@@ -101,7 +97,7 @@ public static boolean volver = false;
 
             },
             new String [] {
-                "ID", "Alfabeto", "Estados", "EdosFinales", "Token Asignados", "Ver Detalles"
+                "ID", "Alfabeto", "Estados", "EdosFinales", "Token Asignados"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -144,7 +140,7 @@ public static boolean volver = false;
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2)))

@@ -1,3 +1,4 @@
+
 package ventanas;
 
 import analizadorcompiladores.Estado;
@@ -6,16 +7,15 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-public class TablaAFD extends javax.swing.JFrame {
+public class AFNaAFD extends javax.swing.JFrame {
     public static boolean volver = false;
-    String cadena = "";
-    int numAFD = -1;
+    int idAFN = -1;
     
-    public TablaAFD() {
+    public AFNaAFD() {
         initComponents();
+        idAFN=-1;
         volver = false;
-        cadena = "";
-        numAFD = -1;
+        jTextField1.setText("");
         actualizarTabla();
         this.setVisible(true);
     }
@@ -23,23 +23,30 @@ public class TablaAFD extends javax.swing.JFrame {
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         ArrayList <Estado> auxListaEstados, auxEdoFinales;
         
-        for(int i=0;i<Principal.listaAFD.size();i++){
-            auxListaEstados = Principal.listaAFD.get(i).getEstados();
+        for(int i=0;i<Principal.listaAFN.size();i++){
+            auxListaEstados = Principal.listaAFN.get(i).getEstadosAFN();
+            auxEdoFinales = Principal.listaAFN.get(i).getEdosAceptacion();
             
-            String[] fila = new String[4];
-            fila[0] = i+""; //Principal.listaAFD.get(i).getIdAFD()+"";
-            fila[1] = Principal.listaAFD.get(i).getAlfabeto().toString();
-            fila[2] = "";
+            String[] fila = new String[7];
+            fila[0] = Principal.listaAFN.get(i).getIdAFN()+"";
+            fila[1] = Principal.listaAFN.get(i).getAlfabeto().toString();
+            fila[3] = Principal.listaAFN.get(i).getEdoInicial().getIdentificador()+"";
+            
+            fila[2] = ""; fila[4] = ""; fila[5]="";
             for(int j=0;j<auxListaEstados.size();j++){
                 fila[2] = fila[2]+auxListaEstados.get(j).getIdentificador()+", ";
             }
-            fila[3] = "Label datos";
+            for(int j=0;j<auxEdoFinales.size();j++){
+                fila[4] = fila[4]+auxEdoFinales.get(j).getIdentificador()+", ";
+                if(auxEdoFinales.get(j).getToken()!=0)
+                fila[5] = fila[5]+auxEdoFinales.get(j).getToken()+", ";
+            }
+            if(fila[5].equals("")) fila[5] = "No hay tokens";
+            fila[6] = "En proceso";
             modelo.addRow(fila);
         }
     }
-    
-    public int id(){ return numAFD; }
-    public String cadena(){ return cadena=""; }
+    public int id(){ return idAFN; }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -49,10 +56,9 @@ public class TablaAFD extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
@@ -62,14 +68,14 @@ public class TablaAFD extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Lista de AFD registrados");
+        jLabel1.setText("Convertir AFN a AFD");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(137, 137, 137)
+                .addGap(268, 268, 268)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -86,23 +92,23 @@ public class TablaAFD extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Alfabeto", "Estados", "Ver tabla"
+                "ID", "Alfabeto", "Estados", "EdoInicial", "EdosFinales", "Tokens", "Ver Detalles"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jLabel3.setText("Cadena a Analizar:");
+        jLabel2.setText("Selecciona el ID del AFN a convertir a AFD");
 
-        jLabel4.setText("AFD a utilizar: ");
+        jLabel3.setText("ID del AFN a convertir:");
 
-        jButton1.setText("Analizar Cadena");
+        jButton1.setText("Volver al Menú");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Volver");
+        jButton2.setText("Convertir a AFD");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -119,37 +125,30 @@ public class TablaAFD extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
+                        .addComponent(jLabel2)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 16, Short.MAX_VALUE)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton1)
-                                .addGap(110, 110, 110))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1)))))
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 234, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -159,22 +158,19 @@ public class TablaAFD extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        volver = true;
+        String auxv1 = jTextField1.getText();
+        
+        if(auxv1.equals("")){
+            JOptionPane.showMessageDialog(this, "Verifica los datos antes de enviar");
+            jTextField1.setText("");
+        }else {
+            idAFN = Integer.valueOf(auxv1);
+            System.out.println("id:"+idAFN);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String auxv1 = jTextField1.getText();
-        String auxv2 = jTextField2.getText();
-        
-        if(auxv1.equals("") || auxv2.equals("")){
-            JOptionPane.showMessageDialog(this, "Verifica los datos antes de enviar");
-            jTextField1.setText("");
-            jTextField2.setText("");
-        }else {
-            numAFD = Integer.valueOf(auxv1);
-            cadena = auxv2;
-            System.out.println("id:"+numAFD+" con cadena:"+cadena);
-        }
+        volver = true;
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {
@@ -191,20 +187,20 @@ public class TablaAFD extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TablaAFD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AFNaAFD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TablaAFD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AFNaAFD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TablaAFD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AFNaAFD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TablaAFD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AFNaAFD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TablaAFD().setVisible(true);
+                new AFNaAFD().setVisible(true);
             }
         });
     }
@@ -213,12 +209,11 @@ public class TablaAFD extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }
