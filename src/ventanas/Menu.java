@@ -90,7 +90,7 @@ public class Menu extends javax.swing.JFrame {
 
         jLabel11.setText("5. Cerradura de Kleene");
 
-        jLabel12.setText("6. Cerradura Epsilon?");
+        jLabel12.setText("6. Cerradura Opcional");
 
         jLabel13.setText("13. Crear AFD con una ER ");
 

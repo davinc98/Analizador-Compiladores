@@ -9,7 +9,13 @@ import com.google.gson.*;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import static java.lang.System.exit;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import ventanas.*;
 
@@ -19,12 +25,13 @@ public class Principal {
     public static ArrayList<AFD> listaAFD = new ArrayList();
     public static int opcionMenu = -1;
     
-    public static void main (String[] args){        
+    public static void main (String[] args) throws FileNotFoundException, IOException{        
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         AFN union = new AFN();
         
         //Interfaces
         Menu menu = new Menu();
+        JFileChooser jf = new JFileChooser();
         CrearBasico basico;
         TablaAFN tablaAFN;
         TablaAFD tablaAFD;
@@ -102,27 +109,18 @@ public class Principal {
                     cerr.setVisible(false);
                     menu.setVisible(true);
                     break;
-                case 6: //Cerradura
-                    System.out.println("Probando cerradura epsilon");
-                    crearAutomataBasicoAFN('c');
-                    crearAutomataBasicoAFN('d');
-                    AFN auf3 =listaAFN.get(listaAFN.size()-1 );
-                    auf3.unirAFN(listaAFN.get(0));
+                case 6: //Cerradura Opcional
+                    menu.setVisible(false);
+                    cerr = new Cerradura(2);
                     
-                    cerraduraEpsilon(listaAFN.size()-1);
-                    /*
-                    AFN auf3 =listaAFN.get(listaAFN.size()-1 );
-                    auf3.unirAFN(listaAFN.get(0));
-                    System.out.println("Probando cerradura epsilon ultimo automata creado");
-                    AFN automataAnalizar =  listaAFN.get( listaAFN.size()-1 );
-                    AFN automataGuardar = new AFN();
-                    ArrayList<Estado> listaEstadosAnalizar = new ArrayList();
-                    listaEstadosAnalizar.add(automataAnalizar.getEstadoInicial());                    
-                    ArrayList <Estado> listaCE = automataAnalizar.irA( listaEstadosAnalizar,'c');
-                    automataGuardar.setEstadosAFN(listaCE);
-                    System.out.println("numero de elementos c_e"+  listaCE.size() );
-                    listaAFN.add(automataGuardar);*/
-                    opcionMenu=-1;
+                    while(cerr.id()==-1){
+                        System.out.print("");
+                        if(cerr.volver) break;
+                    }
+                    if(!cerr.volver) cerraduraOpcional(cerr.id());
+                    
+                    cerr.setVisible(false);
+                    menu.setVisible(true);
                     break;
                 case 7: //Token
                     menu.setVisible(false);
@@ -205,6 +203,31 @@ public class Principal {
                     menu.setVisible(true);
                     break;   
                 case 13: //Crear AFD usando ER
+                    int r = jf.showOpenDialog(null);
+                    if (r==JFileChooser.APPROVE_OPTION){
+                        File f = jf.getSelectedFile();  //Manejador
+                        String ruta = f.getAbsolutePath();
+                        String nombre = f.getName();
+                        long tam = f.length(); 
+                        System.out.println("Archivo leído: "+nombre+" || Tamaño: "+tam+" || Ruta: "+ruta);
+                        
+                        AnalizadorSintactico sint;
+                        try {
+                            BufferedReader br = new BufferedReader(new FileReader(f));
+                            String linea;
+                            while((linea=br.readLine())!=null){
+                                String[] datos = linea.split(" ");
+                                //datos[0] es la expresion regular
+                                //datos[1] es el token
+                                String expresion = datos[0];
+                                int token = Integer.parseInt(datos[1]);
+                                System.out.println("Expresión: "+expresion+" || Token: "+token);
+                                
+                                //sint = new AnalizadorSintactico(expresion,tablaAutomata,token); 
+                                //sint.E();
+                            }                            
+                        } catch(Exception e){ e.printStackTrace(); } 
+                    }
                     break;
                 case 14: //copiar array list AFN  json en el portapapeles     
                     StringSelection ss = new StringSelection(gson.toJson(listaAFN));
@@ -249,6 +272,9 @@ public class Principal {
     }
     public static void cerraduraDeKleene(int id){
         listaAFN.get(id).cerraduradeKleene();
+    }
+    public static void cerraduraOpcional(int id){
+        listaAFN.get(id).cerraduraOpcional();
     }
     public static void asignarToken(int id,int token){
         listaAFN.get(id).getEdosAceptacion().get(0).setToken(token);
@@ -322,19 +348,5 @@ public class Principal {
             Final.getEstadosAFN().get(i).setIdentificador(i);
         }
         return Final;
-    }
-    
-    /////////////////////////////////////////////////////// No sé si funciona
-    public static void cerraduraEpsilon(int id){
-        AFN automataAnalizar =  listaAFN.get( id );
-        AFN automataGuardar = new AFN();
-                    
-        ArrayList<Estado> listaEstadosAnalizar = new ArrayList();
-        listaEstadosAnalizar.add(automataAnalizar.getEdoInicial());
-                    
-        ArrayList <Estado> listaCE = automataAnalizar.irA( listaEstadosAnalizar,'c');
-        automataGuardar.setEstadosAFN(listaCE);
-        System.out.println("Numero de elementos c_e: "+  listaCE.size() );                    
-        listaAFN.add(automataGuardar);
     }
 }

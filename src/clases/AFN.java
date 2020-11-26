@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package clases;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -270,9 +265,6 @@ public class AFN{
         return R;  
     }
     
-    
-    
-    
     public void cerraduraOpcional(){//?
         Estado nuevo_edo_ini = new Estado(); 
         nuevo_edo_ini.setEdoInicial(true);
@@ -282,6 +274,12 @@ public class AFN{
         nuevo_edo_fin.setEdoFinal(true);
         
         EstadosAFN.add(0,nuevo_edo_ini);//Agregar el nuevo estado inicoal en 0
+        
+        //Crear una transicion epsilon del estado final al nuevo final de AFN
+        for(Estado e: EdosAceptacion){
+            e.setTransicion(nuevo_edo_fin, epsilon);
+            e.setEdoFinal(false);
+        }
                 
         EdoInicial.setEdoInicial(false);//Se asigna el nuevo estado inicial
         EdoInicial = nuevo_edo_ini;
@@ -299,8 +297,6 @@ public class AFN{
         }
         System.out.println("Todo OK Opcional");
     }
-    
-    
     
     ArrayList<Estado> mover( Estado e, char c){
         ArrayList<Estado> R = new ArrayList<Estado>();

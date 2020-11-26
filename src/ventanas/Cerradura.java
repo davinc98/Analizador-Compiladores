@@ -25,9 +25,10 @@ public class Cerradura extends javax.swing.JFrame {
         this.accion = accion; 
         String valor;
         switch(accion){
-            case 0: valor = "Cerradura Transitiva"; break;
-            case 1: valor = "Cerradura de Kleene"; break;
-            case 2: valor = "Cerradura epsilon"; break;
+            case 0: valor = "Selecciona el ID del AFN a aplicar Cerradura Transitiva"; break;
+            case 1: valor = "Selecciona el ID del AFN a aplicar Cerradura de Kleene"; break;
+            case 2: valor = "Selecciona el ID del AFN a aplicar Cerradura Opcional"; break;
+            case 3: valor = "Selecciona el ID del AFN a aplicar Cerradura epsilon"; break;
             default: valor = "ERROR";
         }
         jLabel2.setText(valor);
@@ -101,7 +102,7 @@ public class Cerradura extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jLabel2.setText("Cerradura Transitiva/Kleene/Epsilon");
+        jLabel2.setText("Cerradura Transitiva/Kleene/Opcional");
 
         jLabel3.setText("ID seleccionada:");
 
