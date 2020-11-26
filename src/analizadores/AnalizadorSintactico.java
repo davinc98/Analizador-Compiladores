@@ -5,11 +5,13 @@
  */
 package analizadores;
 
+
+
 import clases.*;
 import java.util.ArrayList;
 /**
  *
- * @author J.PEREZ
+ * @author Aacini++
  */
 public class AnalizadorSintactico {
     
@@ -43,6 +45,7 @@ public class AnalizadorSintactico {
     
     private AnalizadorLexico lex;
     private ArrayList<ArrayList<Integer>> TablaAutomataER;
+    private int token=0;
     
     
     //SETEAR LA TABLA 
@@ -162,23 +165,36 @@ public class AnalizadorSintactico {
                if( E(f)){
                    tok= lex.yylex();
                    if(tok== AnalizadorSintactico.PAR_DER ) //  )
-                       return true;
-               
+                       return true;               
                }
+               return false;
 
-           case AnalizadorSintactico.CORCH_IZQ :
-              // Declaraciones
-              break; // break es opcional
-
-           // Podemos tener cualquier número de declaraciones de casos o case
-           // debajo se encuentra la declaración predeterminada, que se usa cuando ninguno de los casos es verdadero.
-           // No se necesita descanso en el case default
-           default : 
-              // Declaraciones
+           case AnalizadorSintactico.CORCH_IZQ :// [ 
+               tok= lex.yylex();
+               if(tok==AnalizadorSintactico.SIMB){ 
+                   lexema1 = lex.getYyText();
+                   tok= lex.yylex();
+                   if(tok==AnalizadorSintactico.GUION){//-
+                       tok= lex.yylex();
+                       if(  tok== AnalizadorSintactico.SIMB ){ //SIMB
+                           lexema2 = lex.getYyText();
+                           tok= lex.yylex();
+                           if(tok== AnalizadorSintactico.CORCH_DER){ // ]
+                               char car1 =  lexema1.charAt(0);
+                               char car2 =  lexema2.charAt(0);
+                               f.crearBasico(car1, car2, this.token);  //crea el basico con interbalos       
+                               return true;
+                           }
+                       }   
+                   }   
+               }
+              return false;
+             case AnalizadorSintactico.SIMB:// SIMB
+                lexema1= lex.getYyText();
+                char car1 =  lexema1.charAt(0);
+                f.crearBasico(car1, this.token);  //crea el basico con interbalos       
+                return true;                 
         }
-                
-        
-        
-    
+        return false;  
     }
 }
