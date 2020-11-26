@@ -1,6 +1,6 @@
 package ventanas;
 
-import analizadorcompiladores.Principal;
+import analizadores.Principal;
 
 public class Menu extends javax.swing.JFrame {
 

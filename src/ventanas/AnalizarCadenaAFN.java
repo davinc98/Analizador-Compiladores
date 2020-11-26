@@ -1,7 +1,7 @@
 package ventanas;
 
-import analizadorcompiladores.Estado;
-import analizadorcompiladores.Principal;
+import clases.Estado;
+import analizadores.Principal;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;

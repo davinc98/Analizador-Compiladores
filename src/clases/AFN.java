@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package analizadorcompiladores;
+package clases;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -15,7 +15,7 @@ import java.util.Stack;
 
 public class AFN{  
     //Constante 'ϵ'
-    static final char epsilon='ϵ';
+    public static final char epsilon='ϵ';
     //ATRIBUTOS
     private Estado EdoInicial;
     private ArrayList<Character> Alfabeto = new ArrayList();
@@ -300,7 +300,7 @@ public class AFN{
     }    
     
     //Analiza un conjunto de estados y devuelve los estados a los que se llega con c
-    ArrayList<Estado> irA(ArrayList<Estado> E, char c){
+    public ArrayList<Estado> irA(ArrayList<Estado> E, char c){
          ArrayList<Estado> R = new ArrayList<Estado>();         
          R = cerraduraEpsilon(mover(E,c));
          
@@ -530,6 +530,7 @@ public class AFN{
             afd.getEstados().get(i).setIdentificador(i);
         }
         
+        afd.generarArrayTabla();//Generar tabla en el AFD
         return afd;
     }
     

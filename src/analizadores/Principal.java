@@ -1,6 +1,9 @@
-package analizadorcompiladores;
+package analizadores;
 
-import static analizadorcompiladores.AFN.epsilon;
+import clases.AFD;
+import clases.Estado;
+import clases.AFN;
+import static clases.AFN.epsilon;
 import java.util.ArrayList;
 import com.google.gson.*;
 import java.awt.Toolkit;

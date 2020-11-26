@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 
-package analizadorcompiladores;
+package analizadores;
+import clases.AFN;
 import com.google.gson.*;
 
 /**

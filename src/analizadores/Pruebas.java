@@ -1,5 +1,9 @@
-package analizadorcompiladores;
-import static analizadorcompiladores.AFN.epsilon;
+package analizadores;
+import analizadores.AnalizadorLexico;
+import clases.AFD;
+import clases.AFN;
+import clases.Estado;
+import static clases.AFN.epsilon;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -33,7 +37,7 @@ public class Pruebas {
         crearAutomataBasicoAFN('M');//7
         crearAutomataBasicoAFN('P');//8
         crearAutomataBasicoAFN('E');//9
-        crearAutomataBasicoAFN('T','V');//10
+        crearAutomataBasicoAFN('T');//10
         
         //Acciones
         
@@ -110,7 +114,7 @@ public class Pruebas {
         //Generar Archivo con la tabla AFD
         afd.generarArchivoTabla("Prueba1");
 
-        ArrayList<ArrayList<Integer>> tablaAFD = afd.getArrayTabla();
+        ArrayList<ArrayList<Integer>> tablaAFD = afd.getTablaAFD();
         
         System.out.println("CONTENIDO DEL ARRAY DE LA TABLA AFD");
         for(int i=0; i<tablaAFD.size(); i++){
@@ -121,31 +125,32 @@ public class Pruebas {
             System.out.println("");
         }
         
-        //Prueba Analizador Léxico Aacini
-        System.out.println("Analizador léxico para afd con DD.DDTTLLDEMEEP");
-        AnalizadorLexico lexico = new AnalizadorLexico(afd,".DD.DDTTLLDEMEEP" );                   
-        int r;
-        r = lexico.yylex();        
-        System.out.println("r: "+r+" lexema: "+lexico.getYyText());
+        //ALGORITMO DE ANALIZADOR LEXICO
+        /************************************************************************/
+        System.out.println("\n\nANALIZADOR LEXICO");
         
-        while( (r = lexico.yylex() ) != -1   ){
+        //String CadenaparaAnalizar = "DD.DDTTLLDEMEEP";
+         String CadenaparaAnalizar = "DD.DDTTLLDEMEEP";
+        AnalizadorLexico lexic = new AnalizadorLexico(afd, CadenaparaAnalizar);                   
+        
+        int r;      
+        while( (r = lexic.yylex() ) != -1   ){
             System.out.println("El token es "+r );
-            System.out.println("El  lexema es: "+lexico.getYyText() );
+            System.out.println("El  lexema es: "+lexic.getYyText() +"\n");
         } 
-        while( (r = lexico.regresarToken() ) != 0   ){
+        
+        
+        while( (r = lexic.regresarToken() ) != 0   ){
             System.out.println("Regresando apuntador actual  a  "+r );  
         }
-        System.out.println("Regresando apuntador actual  a  "+r );
         
-        lexico.regresarToken();
-        
-        r = lexico.yylex();        
-        System.out.println("r: "+r+" lexema: "+lexico.getYyText());
-        while( (r = lexico.yylex() ) != -1   ){
-            System.out.println("El token es "+r );
-            System.out.println("El  lexema es: "+lexico.getYyText() );
-            
+        System.out.println("Regresando apuntador actual  a  "+r );     
+        lexic.regresarToken();  
+
+        while( (r = lexic.yylex() ) != -1   ){
+            System.out.println("Token ["+r+"], Lexema: "+ lexic.getYyText() );            
         }
+        /**********************************************************************/
  
     }  
     
