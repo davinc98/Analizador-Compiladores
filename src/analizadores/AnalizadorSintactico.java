@@ -106,16 +106,79 @@ public class AnalizadorSintactico {
        lex.regresarToken();
        return true;
     }
-    
+    //C -> FC'
     public Boolean C(AFN f){
-        return true;
+         if ( F(f))
+            if(Cp(f))
+                return true;
+        return false;
     }
     
+    
+    
+    //  C' -> +C' | *C' | ?C' | Epsilon
     public Boolean Cp(AFN f){
-        return true;
+        int tok = lex.yylex();
+       
+        switch(tok)
+                {
+                   // declaración case
+                   // los valores deben ser del mismo tipo de la expresión
+                   case AnalizadorSintactico.CERR_POS : //+
+                       f.cerraduraTransitiva(); 
+                       if( Cp(f))
+                           return true;
+                       return false;
+ 
+                   case AnalizadorSintactico.CERR_KLEEN : //*
+                      f.cerraduradeKleene();
+                       if( Cp(f))
+                           return true;
+                       return false;
+                       
+                    case AnalizadorSintactico.OPC : // ?
+                        f.cerraduraOpcional();
+                         if( Cp(f))
+                           return true;
+                       return false;
+                        
+                        
+                   default ://epsilon 
+                       lex.regresarToken();
+                       return true;
+                }
     }
     
+    
+    
+    // F -> (E) | s
     public Boolean F(AFN f){
-        return true;
+        String lexema1, lexema2;
+        int tok = lex.yylex();
+        
+        switch(tok)
+        {
+           case AnalizadorSintactico.PAR_IZQ :// (
+               if( E(f)){
+                   tok= lex.yylex();
+                   if(tok== AnalizadorSintactico.PAR_DER ) //  )
+                       return true;
+               
+               }
+
+           case AnalizadorSintactico.CORCH_IZQ :
+              // Declaraciones
+              break; // break es opcional
+
+           // Podemos tener cualquier número de declaraciones de casos o case
+           // debajo se encuentra la declaración predeterminada, que se usa cuando ninguno de los casos es verdadero.
+           // No se necesita descanso en el case default
+           default : 
+              // Declaraciones
+        }
+                
+        
+        
+    
     }
 }
