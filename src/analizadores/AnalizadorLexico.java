@@ -161,8 +161,8 @@ public class AnalizadorLexico {
                     this.setEdoActual(0); //configuramos el estado actual
                     this.setEdoAceptPrevio(false);
                     
-                    //return -1;//VALOR DEL ERROR ES -1
-                    System.out.println("Ignorando error. [Continua en posicion "+posCaracterActual+"]\n");
+                    return -1;//VALOR DEL ERROR ES -1
+                    //System.out.println("Ignorando error. [Continua en posicion "+posCaracterActual+"]\n");
                 }
             }
         }

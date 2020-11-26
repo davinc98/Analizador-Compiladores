@@ -130,7 +130,7 @@ public class Pruebas {
         System.out.println("\n\nANALIZADOR LEXICO");
         
         //String CadenaparaAnalizar = "DD.DDTTLLDEMEEP";
-         String CadenaparaAnalizar = "DD.DDTTLLDEMEEP";
+         String CadenaparaAnalizar = ".DD.DDTTLLDEMEEP";
         AnalizadorLexico lexic = new AnalizadorLexico(afd, CadenaparaAnalizar);                   
         
         int r;      
