@@ -261,11 +261,11 @@ public class Principal {
         listaAFD.add(afdnuevo);
     }
     public static AnalizadorLexico getAnalizadorLexico(int id,String cadena){
-         AnalizadorLexico lexico = new AnalizadorLexico(listaAFD.get(id),cadena); 
+         AnalizadorLexico lexico = new AnalizadorLexico(listaAFD.get(id).getTablaAFD(),cadena); 
          return lexico;
     }
     public static void imprimeAnalizadorLexico(int id,String cadena){
-        AnalizadorLexico lexico = new AnalizadorLexico(listaAFD.get(id),cadena);   
+        AnalizadorLexico lexico = new AnalizadorLexico(listaAFD.get(id).getTablaAFD(),cadena);   
         String aux_resultado = "";        
         int r;
         while( (r = lexico.yylex() ) != -1 ){

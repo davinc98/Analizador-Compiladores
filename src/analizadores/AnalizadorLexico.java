@@ -20,6 +20,16 @@ public class AnalizadorLexico {
 
     public AnalizadorLexico() {
     }
+    
+    
+    //Recibe la tabla del automata y la cadena a analizar
+    public AnalizadorLexico(ArrayList<ArrayList<Integer>> tablaAutomata, String cadena) {
+        //Se recupera la la tabla de transiciones  del automata
+        this.setTablaAutomata(tablaAutomata);
+        this.setCadenaAnalizar(cadena);
+        
+        System.out.println("Cadena Recibida: "+cadena+"\n");
+    }
 
     //Al crear el analizador recibe un AFD y la cadena que se analizara
     public AnalizadorLexico(AFD automata, String cadena) {
@@ -95,7 +105,7 @@ public class AnalizadorLexico {
         //      si posCaracterActual  es el ultimo 
         if (this.getPosCaracterActual() >= this.getCadenaAnalizar().length()) {
             System.out.println("fin analisis");
-            return -1;
+            return -10; //-10 es el token para FIN
         }
 
         pila.add(this.getPosCaracterActual());  //agregamos la posicion a la pila
@@ -161,8 +171,8 @@ public class AnalizadorLexico {
                     this.setEdoActual(0); //configuramos el estado actual
                     this.setEdoAceptPrevio(false);
                     
-                    //return -1;//VALOR DEL ERROR ES -1
-                    System.out.println("Ignorando error. [Continua en posicion "+posCaracterActual+"]\n");
+                    return -1;//VALOR DEL ERROR ES -1
+                    //System.out.println("Ignorando error. [Continua en posicion "+posCaracterActual+"]\n");
                 }
             }
         }

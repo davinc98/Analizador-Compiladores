@@ -1,20 +1,41 @@
-package analizadores;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Analizador1;
+
 import analizadores.AnalizadorLexico;
 import clases.AFD;
 import clases.AFN;
-import clases.Estado;
 import static clases.AFN.epsilon;
+import clases.Estado;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.google.gson.*;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-
-
-public class Pruebas {    
-
+/**
+ *
+ * @author J.PEREZ
+ * 
+ * ESTA CLASE ES PARA PROBAR UN ANALIZADOR SINTACTICO
+ * DEL EJERCICIO CON GRAMATICA SIN RECURSION SIGUIENTE:
+ *          E -> TE'
+ *          E' -> +TE' | -TE' | Epsilon
+ *          T -> FT'
+ *          T' -> *FT' | /FT' | Epsilon
+ *          F -> (E) | num
+ * 
+ *      Con VN = {E, E', T, T', F}
+ *          VT = {+, -, *, /, (, ), num}   CLASES LEXICAS
+ * 
+ * TOMANDO POR COMODIDAD LA CLASE LEXICA num como S
+ * 
+ */
+public class MainAnalizador1 {
+    
+    
     private static ArrayList<AFN> ListaAFN = new ArrayList();
     private static ArrayList<AFD> ListaAFD = new ArrayList();
     
@@ -27,76 +48,27 @@ public class Pruebas {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
         //Creacion de Automata Para Analizador Lexico
-        crearAutomataBasicoAFN('L');//0  Posicion en el array
-        crearAutomataBasicoAFN('L');//1
-        crearAutomataBasicoAFN('D');//2
-        crearAutomataBasicoAFN('D');//3
-        crearAutomataBasicoAFN('D');//4
-        crearAutomataBasicoAFN('.');//5
-        crearAutomataBasicoAFN('D');//6
-        crearAutomataBasicoAFN('M');//7
-        crearAutomataBasicoAFN('P');//8
-        crearAutomataBasicoAFN('E');//9
-        crearAutomataBasicoAFN('T');//10
+        crearAutomataBasicoAFN('+');//0  Posicion en el array
+        crearAutomataBasicoAFN('-');//1
+        crearAutomataBasicoAFN('*');//2
+        crearAutomataBasicoAFN('/');//3
+        crearAutomataBasicoAFN('(');//4
+        crearAutomataBasicoAFN(')');//5
+        crearAutomataBasicoAFN('S');//6//num
         
-        //Acciones
+        //Acciones      
+        ListaAFNBasicos.get(0).getEdosAceptacion().get(0).setToken(10);
+        ListaAFNBasicos.get(1).getEdosAceptacion().get(0).setToken(20);
+        ListaAFNBasicos.get(2).getEdosAceptacion().get(0).setToken(30);
+        ListaAFNBasicos.get(3).getEdosAceptacion().get(0).setToken(40);
+        ListaAFNBasicos.get(4).getEdosAceptacion().get(0).setToken(50);
+        ListaAFNBasicos.get(5).getEdosAceptacion().get(0).setToken(60);
+        ListaAFNBasicos.get(6).getEdosAceptacion().get(0).setToken(70);
         
-        //Union de 1 y 2
-        AFN afn = unirAutomatasAFN(ListaAFNBasicos.get(1),ListaAFNBasicos.get(2));
-        //Aplicar  cerradura de Kleene
-        afn.cerraduradeKleene();
-        //Concatenar 0 con la cerradura de 1 y 2
-        afn = concatenarAutomatasAFN(ListaAFNBasicos.get(0), afn);
-        
-        afn.getEdosAceptacion().get(0).setToken(10);
-        ListaAFN.add(afn);
-        
-        //Cerradura Transitiva de 3
-        AFN afn3 = new AFN();
-        afn3 = ListaAFNBasicos.get(3).Duplicar();
-        afn3.cerraduraTransitiva();
-        
-        afn3.getEdosAceptacion().get(0).setToken(20);
-        ListaAFN.add(afn3);
-        
-        //Concatenacion de 4+ 5 y 6+
-        AFN afn4 = new AFN();
-        afn4 = ListaAFNBasicos.get(4).Duplicar();
-        afn4.cerraduraTransitiva();
-        
-        afn4 = concatenarAutomatasAFN(afn4, ListaAFNBasicos.get(5));
-        
-        AFN afn6 = new AFN();
-        afn6 = ListaAFNBasicos.get(6).Duplicar();
-        afn6.cerraduraTransitiva();
-        
-        afn6 = concatenarAutomatasAFN(afn4, afn6);
-        
-        afn6.getEdosAceptacion().get(0).setToken(30);
-        ListaAFN.add(afn6);
-        
-        //7 y 8 se quedan igual
-        ListaAFNBasicos.get(7).getEdosAceptacion().get(0).setToken(40);
-        ListaAFN.add(ListaAFNBasicos.get(7));
-        ListaAFNBasicos.get(8).getEdosAceptacion().get(0).setToken(50);
-        ListaAFN.add(ListaAFNBasicos.get(8));
-        
-        //Union de 9 Y 10 con cerradura de kleene
-        AFN afn7 = unirAutomatasAFN(ListaAFNBasicos.get(9),ListaAFNBasicos.get(10));
-        afn7.cerraduraTransitiva();
-        
-        afn7.getEdosAceptacion().get(0).setToken(60);
-        ListaAFN.add(afn7);
-        
-        AFN aefen = new AFN();
-        aefen = unirAFNS(ListaAFN);
-        
-        System.out.println("Analizar cadena en AFN: LLLLD");
-        System.out.println("Resultado: "+aefen.analizarCadena("LLLLD"));
-        System.out.println("Analizar cadena en AFN: LDTTLS");
-        System.out.println("Resultado: "+aefen.analizarCadena("LDTTLS"));
-        
-        AFD afd = aefen.convertirAFN();        
+        AFN afn = new AFN();
+        afn = unirAFNS(ListaAFNBasicos);
+
+        AFD afd = afn.convertirAFN();        
         
         System.out.println("ALFABETO AFD");
         for(Character c: afd.getAlfabeto()){
@@ -110,12 +82,9 @@ public class Pruebas {
             System.out.println("Token: "+afd.getEstados().get(i).getToken());
         }
         
-        //Generar Archivo con la tabla AFD
-        afd.generarArchivoTabla("Prueba1");
-
         ArrayList<ArrayList<Integer>> tablaAFD = afd.getTablaAFD();
         
-        System.out.println("CONTENIDO DEL ARRAY DE LA TABLA AFD");
+        System.out.println("CONTENIDO DE LA TABLA AFD");
         for(int i=0; i<tablaAFD.size(); i++){
             //
             for(int j=0; j<tablaAFD.get(i).size(); j++){
@@ -124,38 +93,28 @@ public class Pruebas {
             System.out.println("");
         }
         
-        //ALGORITMO DE ANALIZADOR LEXICO
-        /************************************************************************/
+        System.out.println("ALFABETO AFD");
+        for(Character c: afd.getAlfabeto()){
+            System.out.println(" "+c);
+        }
+        
+        System.out.println("ESTADOS AFD");
+        for(int i=0; i<afd.getEstados().size(); i++){
+            System.out.println("");
+            System.out.println("Estado: "+afd.getEstados().get(i).getIdentificador());
+            System.out.println("Token: "+afd.getEstados().get(i).getToken());
+        }
+        
+        //ANALIZADOR LEXICO
         System.out.println("\n\nANALIZADOR LEXICO");
-        
-        //String CadenaparaAnalizar = "DD.DDTTLLDEMEEP";
-        String CadenaparaAnalizar = "DD.DDTTLLDEMEEP";
-        AnalizadorLexico lexic = new AnalizadorLexico(afd.getTablaAFD(), CadenaparaAnalizar);                   
-        
-        int r;      
-        while( (r = lexic.yylex() ) != -1   ){
-            System.out.println("El token es "+r );
-            System.out.println("El  lexema es: "+lexic.getYyText() +"\n");
-        } 
-        
-        
-        while( (r = lexic.regresarToken() ) != 0   ){
-            System.out.println("Regresando apuntador actual  a  "+r );  
-        }
-        
-        System.out.println("Regresando apuntador actual  a  "+r );     
-        lexic.regresarToken();  
 
-        while( (r = lexic.yylex() ) != -1   ){
-            System.out.println("Token ["+r+"], Lexema: "+ lexic.getYyText() );            
-        }
-        
-        //lexic.Reset();
-        /**********************************************************************/
-        
-        /*ANALIZADOR SINTACTICO
-        
-        */
+        //num+num+num
+        String CadenaparaAnalizar = "S+S*S+S+S+S/S/S";
+        AnalizadorSintactico1 sintact = new AnalizadorSintactico1(tablaAFD, CadenaparaAnalizar);                   
+        if(sintact.E())
+            System.out.println("\n\nCadena valida.");
+        else
+            System.out.println("\n\nCadena no valida.");
  
     }  
     
@@ -168,6 +127,7 @@ public class Pruebas {
         System.out.println("Automata basico con id:" +afn.getIdAFN()+" creado.");
         ListaAFNBasicos.add(afn);
     }
+    
     
     //Crear automata con transicion de un intervalo de caracteres
     private static void crearAutomataBasicoAFN(char c1, char c2){
@@ -197,7 +157,6 @@ public class Pruebas {
              
         aux1.concatenarAFN(aux2);
         return aux1;
-        
     }
     
     public static AFN unirAFNS(ArrayList<AFN> AFNS){//Union de AFN sin estado final comun
@@ -253,5 +212,4 @@ public class Pruebas {
         return Final;
     }
     
-  
 }
