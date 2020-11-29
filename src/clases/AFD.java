@@ -127,13 +127,14 @@ public class AFD {//Faltam metodos y atributos
         for (int i = 0; i < Estados.size(); i++) {//Recorrer cada estado
             ArrayList<Integer> Estadoi = new ArrayList<Integer>();
 
-            System.out.println("Estado a analizar: " + Estados.get(i).getIdentificador());
+            //System.out.println("Estado a analizar: " + Estados.get(i).getIdentificador());
             for (char c : Alfabeto) {
                 Si = mover(Estados.get(i), c);
                 if (Si.size() == 0) {//Si el conjunto esta vacio
                     Estadoi.add(-1);
                 } else {
-                    System.out.println("--->" + c + "=" + Si.get(0).getIdentificador());
+                    //System.out.println("--->" + c + "=" + Si.get(0).getIdentificador());
+                    
                     //Vamos a suponer que SIEMPRE regresara solo un estado
                     Estadoi.add(Si.get(0).getIdentificador());
                 }
@@ -149,7 +150,7 @@ public class AFD {//Faltam metodos y atributos
     //Para crear un archivo con la tabla del AFD
     //Recibe el nombre con el que requiere crear el archivo
     public boolean generarArchivoTabla(String nombretabla){
-        String nombre = "AFD-"+nombretabla+".txt";
+        String nombre = "Tabla_"+nombretabla+"_AFD.txt";
         File f = new File(nombre);
         try{
   
@@ -168,13 +169,14 @@ public class AFD {//Faltam metodos y atributos
             ArrayList<Estado> Si = new ArrayList<Estado>(); 
             for(int i=0; i<Estados.size();i++){//Recorrer cada estado
                 subcadena = ""+i;
-                System.out.println("Estado a analizar: "+Estados.get(i).getIdentificador());
+                //System.out.println("Estado a analizar: "+Estados.get(i).getIdentificador());
                 for(char c:  Alfabeto){
                     Si = mover(Estados.get(i), c);
                     if(Si.size()==0){//Si el conjunto esta vacio
                         subcadena = subcadena + " -1";
                     }else{
-                        System.out.println("--->"+c+"="+Si.get(0).getIdentificador());
+                        //System.out.println("--->"+c+"="+Si.get(0).getIdentificador());
+                        
                         //Vamos a suponer que SIEMPRE regresara solo un estado
                         subcadena = subcadena + " "+Si.get(0).getIdentificador();
                     }

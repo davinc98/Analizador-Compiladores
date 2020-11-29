@@ -137,6 +137,7 @@ public class AFN{
         for( int i = 0; i< this.EstadosAFN.size(); i++ ){
             this.EstadosAFN.get(i).setIdentificador(i);
         }
+        System.out.println("Exito Union.");
     }
     
     public void concatenarAFN(AFN afn2){           
@@ -161,6 +162,7 @@ public class AFN{
         
         this.EdosAceptacion.clear();
         this.EdosAceptacion.addAll(afn2.getEdosAceptacion());
+        System.out.println("Exito Concatenacion.");
     }
     
     public void cerraduraTransitiva(){//+
@@ -190,7 +192,7 @@ public class AFN{
         for(int i=0;i<EstadosAFN.size();i++){
             EstadosAFN.get(i).setIdentificador(i);
         }
-        System.out.println("Todo OK Transitiva");
+        System.out.println("Todo OK Cerradura Positiva.");
     }
     
     public void cerraduradeKleene(){//*
@@ -223,7 +225,7 @@ public class AFN{
         for(int i=0;i<EstadosAFN.size();i++){
             EstadosAFN.get(i).setIdentificador(i);
         }
-        System.out.println("Todo OK Kleene");
+        System.out.println("Todo OK Cerradura Kleene.");
     }
     
     public void cerraduraOpcional(){//?
@@ -256,7 +258,7 @@ public class AFN{
         for(int i=0;i<EstadosAFN.size();i++){
             EstadosAFN.get(i).setIdentificador(i);
         }
-        System.out.println("Todo OK Opcional");
+        System.out.println("Todo OK Cerradura Opcional.");
     }
     
     //OPERACIONES   
@@ -493,14 +495,15 @@ public class AFN{
         
         //Agregar Alfabeto
         afd.setAlfabeto(Alfabeto);
-                                   
-        for(Subconjunto S: R){
-            System.out.println("");
-            System.out.println("Subconjunto: "+S.getId());
-            for(int l=0;l<S.getEstados().size();l++){                
-                System.out.println(" Estado:"+S.getEstados().get(l).getIdentificador());
-            }
-        }
+                
+        //NO BORRAR COMENTARIO
+//        for(Subconjunto S: R){
+//            System.out.println("");
+//            System.out.println("Subconjunto: "+S.getId());
+//            for(int l=0;l<S.getEstados().size();l++){                
+//                System.out.println(" Estado:"+S.getEstados().get(l).getIdentificador());
+//            }
+//        }
         
         //Creamos una Estado por cada Subconjunto
         for(Subconjunto S: R){

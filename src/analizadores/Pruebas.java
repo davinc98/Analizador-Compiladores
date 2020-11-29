@@ -131,7 +131,7 @@ public class Pruebas {
         //String CadenaparaAnalizar = "DD.DDTTLLDEMEEP";
         String CadenaparaAnalizar = "DD.DDTTLLDEMEEP";
         AnalizadorLexico lexic = new AnalizadorLexico(afd.getTablaAFD(), CadenaparaAnalizar);                   
-        
+
         int r;      
         while( (r = lexic.yylex() ) != -1   ){
             System.out.println("El token es "+r );

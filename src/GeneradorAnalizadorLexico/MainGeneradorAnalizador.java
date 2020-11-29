@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package AnalizadorCalculadora;
+package GeneradorAnalizadorLexico;
 
+import AnalizadorCalculadora.*;
 import Analizador2.*;
 import clases.Numero;
 import Analizador1.*;
@@ -25,30 +26,38 @@ import java.util.Scanner;
  * CONVERTIDOR A POSTFIJO.  
  *  
  * 
- * GRAMATICA PARA LA CALCULADORA:
- * 
- *          E -> E+T | E-T | T
- *          T -> T*P | T/P | P
- *          P -> P^F | F
- *          F -> (E) | SIN(E) | COS(E) | TAN(E) | LN(E) | LOG(E) | NUM
- * 
- * ELIMINANDO LA RECURSION POR LA IZQ:
- * 
- *          E -> TE'
- *          E' -> +TE' | -TE' | Epsilon
- *          T -> PT'
- *          T' -> *PT' | /PT' | Epsilon
- *          P -> FP'
- *          P' -> ^FP' | Epsilon
- *          F -> (E) | SIN(E) | COS(E) | TAN(E) | LN(E) | LOG(E) | NUM
- * 
- *      Con VN = {E, E', T, T', P, P', F}
- *          VT = {+, -, *, /, ^, (, ), SIN, COS, TAN, LN, LOG, NUM}   CLASES LEXICAS
- * 
- * TOMANDO POR NUM A LA EXPRESION: D+(.D+)?
+ *GRAMATICA:
+       E -> E or T | T
+       T -> T & C | C                 & es para concatenacion
+       C -> C+ | C* | C? | F
+       F -> (E) | [SIMB-SIMB] | SIMB
+      
+      GRAMATICA SIN RECURSION:
+    
+       E -> TE'
+       E' -> or TE' | Epsilon
+       T -> CT'
+       T' -> & CT' | Epsilon
+       C -> FC'
+       C' -> +C' | *C' | ?C' | Epsilon
+       F -> (E) | [SIMB-SIMB] | SIMB
+
+* CLASES LEXICAS: Operadores para este analizador
+        | Operacion OR
+        & Concatenacion
+        + Cerradura positiva
+        * Cerradura de Kleene
+        ? Cerradura opcional
+        (
+        )
+        [
+        ]
+        -   Operador de RANGO
+        \ ESCAPE
+        SIMB
  * 
  */
-public class MainCalculadora {
+public class MainGeneradorAnalizador {
     
     
     private static ArrayList<AFN> AFNBasicos = new ArrayList();
@@ -58,66 +67,42 @@ public class MainCalculadora {
     public static void main (String[] args){   
         
         //Creacion de Automata Para Analizador Lexico
-        crearAutomataBasicoAFN('+');//0  Posicion en el array BASICOS
-        crearAutomataBasicoAFN('-');//1
-        crearAutomataBasicoAFN('*');//2
-        crearAutomataBasicoAFN('/');//3
-        crearAutomataBasicoAFN('^');//4
+        crearAutomataBasicoAFN('|');//0  Posicion en el array BASICOS
+        crearAutomataBasicoAFN('&');//1
+        crearAutomataBasicoAFN('+');//2
+        crearAutomataBasicoAFN('*');//3
+        crearAutomataBasicoAFN('?');//4
         crearAutomataBasicoAFN('(');//5
         crearAutomataBasicoAFN(')');//6
+        crearAutomataBasicoAFN('[');//7
+        crearAutomataBasicoAFN(']');//8
+        crearAutomataBasicoAFN('-');//9
         
-        //Automata para SIN
-        crearAutomataBasicoAFN('S');//7
-        crearAutomataBasicoAFN('I');//8
-        crearAutomataBasicoAFN('N');//9
+        crearAutomataBasicoAFN((char)92);//10 ESCAPE (\)
         
-        //Automata para COS
-        crearAutomataBasicoAFN('C');//10
-        crearAutomataBasicoAFN('O');//11
-        crearAutomataBasicoAFN('S');//12        
+        //Considerando que se pudiese tomar todos los caracteres del ASCII 
+        //Se propone el rango de valores admitidos para un afn basico desde 
+        //el simbolo 0 al 255 de la tabla ASCII de https://elcodigoascii.com.ar/
+        //Excluyendo los caracteres OPERADORES
         
-        //Automata para TAN
-        crearAutomataBasicoAFN('T');//13
-        crearAutomataBasicoAFN('A');//14
-        crearAutomataBasicoAFN('N');//15
+        crearAutomataBasicoAFN((char)0, (char)37);//11
+        crearAutomataBasicoAFN((char)39);//12
+        crearAutomataBasicoAFN((char)44);//13
+        crearAutomataBasicoAFN((char)46, (char)62);//14
+        crearAutomataBasicoAFN((char)64, (char)90);//15
+        crearAutomataBasicoAFN((char)94, (char)123);//16
+        crearAutomataBasicoAFN((char)125, (char)255);//17     
         
-        //Automata para LN
-        crearAutomataBasicoAFN('L');//16
-        crearAutomataBasicoAFN('N');//17
+        //Operaciones
+        AFN simb = new AFN();
+        simb = AFNBasicos.get(11).Duplicar();
+        simb.unirAFN(AFNBasicos.get(12));
+        simb.unirAFN(AFNBasicos.get(13));
+        simb.unirAFN(AFNBasicos.get(14));
+        simb.unirAFN(AFNBasicos.get(15));
+        simb.unirAFN(AFNBasicos.get(16));
+        simb.unirAFN(AFNBasicos.get(17));
         
-        //Automata para LOG
-        crearAutomataBasicoAFN('L');//18
-        crearAutomataBasicoAFN('O');//19
-        crearAutomataBasicoAFN('G');//20
-        
-        //Automata para NUM:  D+(.D+)?
-        crearAutomataBasicoAFN('0','9');//21
-        crearAutomataBasicoAFN('.');//22
-        crearAutomataBasicoAFN('0','9');//23
-        
-        
-        //Acciones
-        AFN aux = concatenarAutomatasAFN(AFNBasicos.get(7), AFNBasicos.get(8));
-        AFN afnSIN = concatenarAutomatasAFN(aux, AFNBasicos.get(9));
-        
-        aux = concatenarAutomatasAFN(AFNBasicos.get(10), AFNBasicos.get(11));
-        AFN afnCOS = concatenarAutomatasAFN(aux, AFNBasicos.get(12));
-        
-        aux = concatenarAutomatasAFN(AFNBasicos.get(13), AFNBasicos.get(14));
-        AFN afnTAN = concatenarAutomatasAFN(aux, AFNBasicos.get(15));
-        
-        AFN afnLN = concatenarAutomatasAFN(AFNBasicos.get(16), AFNBasicos.get(17));
-        
-        aux = concatenarAutomatasAFN(AFNBasicos.get(18), AFNBasicos.get(19));
-        AFN afnLOG = concatenarAutomatasAFN(aux, AFNBasicos.get(20));
-        
-        AFN auxD1 = AFNBasicos.get(23).Duplicar();
-                auxD1.cerraduraTransitiva();//D+
-        AFN auxP = concatenarAutomatasAFN(AFNBasicos.get(22), auxD1);//.D+
-            auxP.cerraduraOpcional();//(.D+)?        
-        AFN auxD2 = AFNBasicos.get(21).Duplicar();
-            auxD2.cerraduraTransitiva();//D+        
-        AFN afnNUM = concatenarAutomatasAFN(auxD2, auxP);//D+(.D+)?
         
         //Anadir los AFN a la lista para UNIR
         AFNparaUnion.add(AFNBasicos.get(0));//0
@@ -127,13 +112,11 @@ public class MainCalculadora {
         AFNparaUnion.add(AFNBasicos.get(4));//4
         AFNparaUnion.add(AFNBasicos.get(5));//5
         AFNparaUnion.add(AFNBasicos.get(6));//6
-        
-        AFNparaUnion.add(afnSIN);//7
-        AFNparaUnion.add(afnCOS);//8
-        AFNparaUnion.add(afnTAN);//9
-        AFNparaUnion.add(afnLN);//10
-        AFNparaUnion.add(afnLOG);//11
-        AFNparaUnion.add(afnNUM);//12    
+        AFNparaUnion.add(AFNBasicos.get(7));//7
+        AFNparaUnion.add(AFNBasicos.get(8));//8
+        AFNparaUnion.add(AFNBasicos.get(9));//9
+        AFNparaUnion.add(AFNBasicos.get(10));//10  
+        AFNparaUnion.add(simb);//11
         
         //Asignasion de TOKENS
         AFNparaUnion.get(0).getEdosAceptacion().get(0).setToken(10);
@@ -148,68 +131,57 @@ public class MainCalculadora {
         AFNparaUnion.get(9).getEdosAceptacion().get(0).setToken(100);
         AFNparaUnion.get(10).getEdosAceptacion().get(0).setToken(110);
         AFNparaUnion.get(11).getEdosAceptacion().get(0).setToken(120);
-        AFNparaUnion.get(12).getEdosAceptacion().get(0).setToken(130);
         
         AFN afn = new AFN();
         afn = unirAFNS(AFNparaUnion);
 
         AFD afd = afn.convertirAFN();        
         
-        System.out.println("ALFABETO AFD");
-        for(Character c: afd.getAlfabeto()){
-            System.out.println(" "+c);
-        }
-        
-        System.out.println("ESTADOS AFD");
-        for(int i=0; i<afd.getEstados().size(); i++){
-            System.out.println("");
-            System.out.println("Estado: "+afd.getEstados().get(i).getIdentificador());
-            System.out.println("Token: "+afd.getEstados().get(i).getToken());
-        }
-        
+//        System.out.println("ALFABETO AFD");
+//        for(Character c: afd.getAlfabeto()){
+//            System.out.println(" "+c);
+//        }
+//        
+//        System.out.println("ESTADOS AFD");
+//        for(int i=0; i<afd.getEstados().size(); i++){
+//            System.out.println("");
+//            System.out.println("Estado: "+afd.getEstados().get(i).getIdentificador());
+//            System.out.println("Token: "+afd.getEstados().get(i).getToken());
+//        }
+//        
         ArrayList<ArrayList<Integer>> tablaAFD = afd.getTablaAFD();
         
-        System.out.println("CONTENIDO DE LA TABLA AFD");
-        for(int i=0; i<tablaAFD.size(); i++){
-            //
-            for(int j=0; j<tablaAFD.get(i).size(); j++){
-                System.out.print(" "+tablaAFD.get(i).get(j));
-            }
-            System.out.println("");
-        }
+//        System.out.println("CONTENIDO DE LA TABLA AFD");
+//        for(int i=0; i<tablaAFD.size(); i++){
+//            //
+//            for(int j=0; j<tablaAFD.get(i).size(); j++){
+//                System.out.print(" "+tablaAFD.get(i).get(j));
+//            }
+//            System.out.println("");
+//        }
         
-        System.out.println("ALFABETO AFD");
-        for(Character c: afd.getAlfabeto()){
-            System.out.println(" "+c);
-        }
-        
-        System.out.println("ESTADOS AFD");
-        for(int i=0; i<afd.getEstados().size(); i++){
-            System.out.println("");
-            System.out.println("Estado: "+afd.getEstados().get(i).getIdentificador());
-            System.out.println("Token: "+afd.getEstados().get(i).getToken());
-        }
+//        System.out.println("ALFABETO AFD");
+//        for(Character c: afd.getAlfabeto()){
+//            System.out.println(" "+c);
+//        }
+//        
+//        System.out.println("ESTADOS AFD");
+//        for(int i=0; i<afd.getEstados().size(); i++){
+//            System.out.println("");
+//            System.out.println("Estado: "+afd.getEstados().get(i).getIdentificador());
+//            System.out.println("Token: "+afd.getEstados().get(i).getToken());
+//        }
         
         //ANALIZADOR LEXICO
-        System.out.println("\n\nANALIZADOR LEXICO");
-
-        //num+num+num
-        //String CadenaparaAnalizar = "SIN(90)";
-        String CadenaparaAnalizar = "2.8+7^(9-5)/4";
-
-        AnalizadorSintacticoCalculadora calculadora = new AnalizadorSintacticoCalculadora(tablaAFD, CadenaparaAnalizar);                   
-
-        Resultado res = new Resultado();
-        calculadora.E(res);
-        
-        if(res.isValido()){
-            System.out.println("\n\nCadena Aceptada! ");
-            System.out.println("\tPostfijo:  "+res.getCadena());
-            System.out.println("\tResultado: "+res.getValor());
-        }else{
-            System.out.println("\n\nCadena no valida.");
-        }
+        String CadenaparaAnalizar = "(\\g|[A-Z])";
+        GeneradorAnalizadorLexico Generador = new GeneradorAnalizadorLexico(tablaAFD, CadenaparaAnalizar);
  
+        AFN res = new AFN();
+        Generador.E(res);
+        
+        AFD resafd = res.convertirAFN();
+        resafd.generarArchivoTabla("pruebalexico");
+        
     }  
     
     
