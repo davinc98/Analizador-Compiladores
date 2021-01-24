@@ -109,7 +109,7 @@ public class MainAnalizador1 {
         System.out.println("\n\nANALIZADOR LEXICO");
 
         //num+num+num
-        String CadenaparaAnalizar = "S+S*S+S+S+S/S/S";
+        String CadenaparaAnalizar = "S+S*(S+S)+S+S/S/S";
         AnalizadorSintactico1 sintact = new AnalizadorSintactico1(tablaAFD, CadenaparaAnalizar);                   
         if(sintact.E())
             System.out.println("\n\nCadena valida.");

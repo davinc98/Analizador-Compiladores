@@ -9,6 +9,10 @@ import clases.AFD;
 import clases.AFN;
 import static clases.AFN.epsilon;
 import clases.Estado;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -50,16 +54,16 @@ import java.util.ArrayList;
         SIMB
  * 
  */
-public class MainGeneradorAnalizador {
+public class MainGeneradorAnalizadorLexico {
     
+    private static ArrayList<AFN> AFNBasicosGenerador = new ArrayList();
+    private static ArrayList<AFN> AFNFinalesGenerador = new ArrayList();
+    ArrayList<ArrayList<Integer>> tablageneradorAFD = new ArrayList();
     
-    private static ArrayList<AFN> AFNBasicos = new ArrayList();
-    private static ArrayList<AFN> AFNparaUnion = new ArrayList();
+    private static ArrayList<AFN> AFNGenerados = new ArrayList();
     
-    
-    public static void main (String[] args){   
-        
-        //Creacion de Automata Para Analizador Lexico
+    public MainGeneradorAnalizadorLexico(){ 
+        //Creacion de Automata Para Generador de Analizadores Lexicos
         
         //OPERADORES
         crearAutomataBasicoAFN('|');//0  Posicion en el array BASICOS
@@ -99,113 +103,117 @@ public class MainGeneradorAnalizador {
         
         //Operaciones
         AFN simb = new AFN();
-        simb = AFNBasicos.get(11).Duplicar();
-        simb.unirAFN(AFNBasicos.get(12));
-        simb.unirAFN(AFNBasicos.get(13));
-        simb.unirAFN(AFNBasicos.get(14));
-        simb.unirAFN(AFNBasicos.get(15));
-        simb.unirAFN(AFNBasicos.get(16));
-        simb.unirAFN(AFNBasicos.get(17));
+        simb = AFNBasicosGenerador.get(11).Duplicar();
+        simb.unirAFN(AFNBasicosGenerador.get(12));
+        simb.unirAFN(AFNBasicosGenerador.get(13));
+        simb.unirAFN(AFNBasicosGenerador.get(14));
+        simb.unirAFN(AFNBasicosGenerador.get(15));
+        simb.unirAFN(AFNBasicosGenerador.get(16));
+        simb.unirAFN(AFNBasicosGenerador.get(17));
         
         
         //Anadir los AFN a la lista para UNIR
-        AFNparaUnion.add(AFNBasicos.get(0));//0
-        AFNparaUnion.add(AFNBasicos.get(1));//1
-        AFNparaUnion.add(AFNBasicos.get(2));//2
-        AFNparaUnion.add(AFNBasicos.get(3));//3
-        AFNparaUnion.add(AFNBasicos.get(4));//4
-        AFNparaUnion.add(AFNBasicos.get(5));//5
-        AFNparaUnion.add(AFNBasicos.get(6));//6
-        AFNparaUnion.add(AFNBasicos.get(7));//7
-        AFNparaUnion.add(AFNBasicos.get(8));//8
-        AFNparaUnion.add(AFNBasicos.get(9));//9
-        AFNparaUnion.add(AFNBasicos.get(10));//10  
-        AFNparaUnion.add(simb);//11
+        AFNFinalesGenerador.add(AFNBasicosGenerador.get(0));//0
+        AFNFinalesGenerador.add(AFNBasicosGenerador.get(1));//1
+        AFNFinalesGenerador.add(AFNBasicosGenerador.get(2));//2
+        AFNFinalesGenerador.add(AFNBasicosGenerador.get(3));//3
+        AFNFinalesGenerador.add(AFNBasicosGenerador.get(4));//4
+        AFNFinalesGenerador.add(AFNBasicosGenerador.get(5));//5
+        AFNFinalesGenerador.add(AFNBasicosGenerador.get(6));//6
+        AFNFinalesGenerador.add(AFNBasicosGenerador.get(7));//7
+        AFNFinalesGenerador.add(AFNBasicosGenerador.get(8));//8
+        AFNFinalesGenerador.add(AFNBasicosGenerador.get(9));//9
+        AFNFinalesGenerador.add(AFNBasicosGenerador.get(10));//10  
+        AFNFinalesGenerador.add(simb);//11
         
         //Asignasion de TOKENS
-        AFNparaUnion.get(0).getEdosAceptacion().get(0).setToken(10);
-        AFNparaUnion.get(1).getEdosAceptacion().get(0).setToken(20);
-        AFNparaUnion.get(2).getEdosAceptacion().get(0).setToken(30);
-        AFNparaUnion.get(3).getEdosAceptacion().get(0).setToken(40);
-        AFNparaUnion.get(4).getEdosAceptacion().get(0).setToken(50);
-        AFNparaUnion.get(5).getEdosAceptacion().get(0).setToken(60);
-        AFNparaUnion.get(6).getEdosAceptacion().get(0).setToken(70);
-        AFNparaUnion.get(7).getEdosAceptacion().get(0).setToken(80);
-        AFNparaUnion.get(8).getEdosAceptacion().get(0).setToken(90);
-        AFNparaUnion.get(9).getEdosAceptacion().get(0).setToken(100);
-        AFNparaUnion.get(10).getEdosAceptacion().get(0).setToken(110);
-        AFNparaUnion.get(11).getEdosAceptacion().get(0).setToken(120);
+        AFNFinalesGenerador.get(0).getEdosAceptacion().get(0).setToken(10);
+        AFNFinalesGenerador.get(1).getEdosAceptacion().get(0).setToken(20);
+        AFNFinalesGenerador.get(2).getEdosAceptacion().get(0).setToken(30);
+        AFNFinalesGenerador.get(3).getEdosAceptacion().get(0).setToken(40);
+        AFNFinalesGenerador.get(4).getEdosAceptacion().get(0).setToken(50);
+        AFNFinalesGenerador.get(5).getEdosAceptacion().get(0).setToken(60);
+        AFNFinalesGenerador.get(6).getEdosAceptacion().get(0).setToken(70);
+        AFNFinalesGenerador.get(7).getEdosAceptacion().get(0).setToken(80);
+        AFNFinalesGenerador.get(8).getEdosAceptacion().get(0).setToken(90);
+        AFNFinalesGenerador.get(9).getEdosAceptacion().get(0).setToken(100);
+        AFNFinalesGenerador.get(10).getEdosAceptacion().get(0).setToken(110);
+        AFNFinalesGenerador.get(11).getEdosAceptacion().get(0).setToken(120);
         
         AFN afn = new AFN();
-        afn = unirAFNS(AFNparaUnion);
-
-        AFD afd = afn.convertirAFN();        
+        afn = unirAFNS(AFNFinalesGenerador);
+        AFD afd = afn.convertirAFN();    
+        tablageneradorAFD = afd.getTablaAFD();
+    }  
+    
+    //Recibe el nombre del archivo(con ext) con las ER y los tokens
+    public AFN generarAFN(String nombreFichero){
+        BufferedReader br = null; 
         
-//        System.out.println("ALFABETO AFD");
-//        for(Character c: afd.getAlfabeto()){
-//            System.out.println(" "+c);
-//        }
-//        
-//        System.out.println("ESTADOS AFD");
-//        for(int i=0; i<afd.getEstados().size(); i++){
-//            System.out.println("");
-//            System.out.println("Estado: "+afd.getEstados().get(i).getIdentificador());
-//            System.out.println("Token: "+afd.getEstados().get(i).getToken());
-//        }
-//        
-        ArrayList<ArrayList<Integer>> tablageneradorAFD = afd.getTablaAFD();
-        
-//        System.out.println("CONTENIDO DE LA TABLA AFD");
-//        for(int i=0; i<tablaAFD.size(); i++){
-//            //
-//            for(int j=0; j<tablaAFD.get(i).size(); j++){
-//                System.out.print(" "+tablageneradorAFD.get(i).get(j));
-//            }
-//            System.out.println("");
-//        }
-        
-//        System.out.println("ALFABETO AFD");
-//        for(Character c: afd.getAlfabeto()){
-//            System.out.println(" "+c);
-//        }
-//        
-//        System.out.println("ESTADOS AFD");
-//        for(int i=0; i<afd.getEstados().size(); i++){
-//            System.out.println("");
-//            System.out.println("Estado: "+afd.getEstados().get(i).getIdentificador());
-//            System.out.println("Token: "+afd.getEstados().get(i).getToken());
-//        }
-        
+        try {
+            br = new BufferedReader(new FileReader(nombreFichero));
+            String linea = br.readLine();
+            while (linea != null) {
+                String []cad = linea.split(" ");
+                String expreg = cad[0];int token = Integer.parseInt(cad[1]);
+                
+                generarAFN(expreg, token);
+                //System.out.println(linea);
+                
+                linea = br.readLine();
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: Fichero no encontrado");
+            System.out.println(e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error de lectura del fichero");
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+            } catch (Exception e) {
+                System.out.println("Error al cerrar el fichero");
+                System.out.println(e.getMessage());
+            }
+        }
+        System.out.println("Fin transformacion de ERs.");
+        return unirAFNS(AFNGenerados);
+    }
+    
+    
+    //Recibe solo la expresion regular y el token
+    public void generarAFN(String expreg, int token){        
         //ANALIZADOR LEXICO
-        //String CadenaparaAnalizar = "(\\g|[A-Z])";
-        String CadenaparaAnalizar = "([a-z]|[A-Z])&([a-z]|[A-Z]|[0-9])*";
-        GeneradorAnalizadorLexico  Generador = new GeneradorAnalizadorLexico(tablageneradorAFD, CadenaparaAnalizar);
- 
+        GeneradorAnalizadorLexico  Generador = new GeneradorAnalizadorLexico(tablageneradorAFD, expreg);
         AFN res = new AFN();
         Generador.E(res);
-        
-        AFD resafd = res.convertirAFN();
-        resafd.generarArchivoTabla("pruebalexico");
-        
-    }  
+        res.getEdosAceptacion().get(0).setToken(token);
+        AFNGenerados.add(res);
+    }
+    
+    public AFN getAFNFinal(){
+        return unirAFNS(AFNGenerados);
+    }
     
     
     
     //Crear el automata con transicion de un caracter
     private static void crearAutomataBasicoAFN(char c){
         AFN afn = new AFN();
-        afn.crearBasico(c, AFNBasicos.size());    
+        afn.crearBasico(c, AFNBasicosGenerador.size());    
         System.out.println("Automata basico con id:" +afn.getIdAFN()+" creado.");
-        AFNBasicos.add(afn);
+        AFNBasicosGenerador.add(afn);
     }
     
     
     //Crear automata con transicion de un intervalo de caracteres
     private static void crearAutomataBasicoAFN(char c1, char c2){
         AFN afn = new AFN();
-        afn.crearBasico(c1, c2, AFNBasicos.size());    
+        afn.crearBasico(c1, c2, AFNBasicosGenerador.size());    
         System.out.println("Automata basico con id:" +afn.getIdAFN()+" creado.");
-        AFNBasicos.add(afn);
+        AFNBasicosGenerador.add(afn);
     }
 
     private static AFN unirAutomatasAFN(AFN afn1, AFN afn2) {
@@ -230,7 +238,8 @@ public class MainGeneradorAnalizador {
         return aux1;
     }
     
-    public static AFN unirAFNS(ArrayList<AFN> AFNS){//Union de AFN sin estado final comun
+    //Union de AFN sin estado final comun
+    public static AFN unirAFNS(ArrayList<AFN> AFNS){
         //Unir Alfabeto
         AFN Final = new AFN();//Contendra todos los afn unidos
         

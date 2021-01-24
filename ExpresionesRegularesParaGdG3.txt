@@ -1,0 +1,7 @@
+E->_T_E';
+E'->_OR_T_E'|_Epsilon;
+T->_C_T';
+T'->_AND_C_T'|_Epsilon;
+C->_F_C';
+C'->_+_C'|_*_C'|_OP_C'|_Epsilon;
+F->_(_E_)|_simb;

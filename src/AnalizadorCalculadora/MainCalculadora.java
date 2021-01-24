@@ -5,17 +5,12 @@
  */
 package AnalizadorCalculadora;
 
-import Analizador2.*;
-import clases.Numero;
-import Analizador1.*;
-import analizadores.AnalizadorLexico;
 import clases.AFD;
 import clases.AFN;
 import static clases.AFN.epsilon;
 import clases.Estado;
 import clases.Resultado;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  *
@@ -195,7 +190,7 @@ public class MainCalculadora {
 
         //num+num+num
         //String CadenaparaAnalizar = "SIN(90)";
-        String CadenaparaAnalizar = "2.8+7^(9-5)/4";
+        String CadenaparaAnalizar = "20.8+7^(9-5)/4";
 
         AnalizadorSintacticoCalculadora calculadora = new AnalizadorSintacticoCalculadora(tablaAFD, CadenaparaAnalizar);                   
 

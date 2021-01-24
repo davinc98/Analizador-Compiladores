@@ -1,0 +1,5 @@
+E->_T_E';
+E'->_+_T_E'|_-_T_E'|_Epsilon;
+T->_F_T';
+T'->_*_F_T'|_/_F_T'|_Epsilon;
+F->_(_E_)|_num;

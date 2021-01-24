@@ -3,6 +3,7 @@ package analizadores;
 import clases.AFD;
 import java.util.ArrayList;
 import java.util.Stack;
+import java.lang.Integer;
 
 public class AnalizadorLexico {
 
@@ -17,8 +18,73 @@ public class AnalizadorLexico {
 
     private String cadenaAnalizar;
     private String yyText;//Subcadena entre inicioLexema y finLexema
+    
+    
+    //VARIABLES RESPALDO PARA GUARDAR ESTADO DEL ANALIZADOR
+    private int posCaracterActualResp = 0;
+    private int inicioLexemaResp = 0;
+    private int finLexemaResp = -1;
+    private boolean edoAceptPrevioResp = false;
+    private int tokenResp = 0;
+    private int edoActualResp = 0;
+    private Stack<Integer> pilaResp = new Stack();
+    private String yyTextResp;
+    
 
     public AnalizadorLexico() {
+    }
+    
+    
+    public void guardaEstadoActual(){
+        posCaracterActualResp = posCaracterActual;
+        inicioLexemaResp = inicioLexema;
+        finLexemaResp = finLexema;
+        edoAceptPrevioResp = edoAceptPrevio;
+        tokenResp = token;
+        edoActualResp = edoActual;
+        
+        //Respaldar Pila
+        int c = pila.size();
+        Stack<Integer> aux = new Stack();
+        while(c != 0){
+            Integer t = pila.pop();
+            pilaResp.add(t);
+            aux.add(t);
+            c = pila.size();
+        }
+        //Volver a agreagar valores a la pila
+        c = aux.size();
+        while(c != 0){
+            Integer t = aux.pop();
+            pila.add(t);
+            c = aux.size();
+        }
+        yyTextResp = yyText;
+    }
+    
+    public void recuperaEstadoGuardado(){
+        posCaracterActual = posCaracterActualResp;
+        inicioLexema = inicioLexemaResp;
+        finLexema = finLexemaResp;
+        edoAceptPrevio = edoAceptPrevioResp;
+        token = tokenResp;
+        edoActual = edoActualResp;
+        
+        //Vaciar pila
+        int c = pila.size();
+        while(c != 0){
+            Integer t = pila.pop();
+            c = pila.size();
+        }
+
+        c = pilaResp.size();
+        while(c != 0){
+            Integer t = pilaResp.pop();
+            pila.add(t);
+            c = pilaResp.size();
+        }
+        
+        yyText = yyTextResp;
     }
     
     
@@ -28,7 +94,7 @@ public class AnalizadorLexico {
         this.setTablaAutomata(tablaAutomata);
         this.setCadenaAnalizar(cadena);
         
-        System.out.println("Cadena Recibida: "+cadena+"\n");
+        System.out.println("\n[AnalizadorLexico] Cadena Recibida: "+cadena+"\n");
     }
 
     //Al crear el analizador recibe un AFD y la cadena que se analizara
@@ -104,7 +170,7 @@ public class AnalizadorLexico {
 
         //      si posCaracterActual  es el ultimo 
         if (this.getPosCaracterActual() >= this.getCadenaAnalizar().length()) {
-            System.out.println("fin analisis");
+            //System.out.println("fin analisis");
             return -10; //-10 es el token para FIN
         }
 

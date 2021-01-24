@@ -57,6 +57,7 @@ public class AFN{
         this.EstadosAFN.add(estado_ini);
         this.EstadosAFN.add(estado_fin);
         this.EdosAceptacion.add(estado_fin);
+        System.out.println("Operacion CREAR AFN ["+c+"] Exitosa.");
     }
     
     //Crear automata con transision por intervalo
@@ -88,6 +89,7 @@ public class AFN{
         this.EstadosAFN.add(estado_ini);
         this.EstadosAFN.add(estado_fin);
         this.EdosAceptacion.add(estado_fin);
+        System.out.println("Operacion CREAR AFN ["+c1+"-"+c2+"] Exitosa.");
     }
     
     public void unirAFN(AFN afn2){
@@ -137,7 +139,7 @@ public class AFN{
         for( int i = 0; i< this.EstadosAFN.size(); i++ ){
             this.EstadosAFN.get(i).setIdentificador(i);
         }
-        System.out.println("Exito Union.");
+        System.out.println("Operacion UNION Exitosa.");
     }
     
     public void concatenarAFN(AFN afn2){           
@@ -162,7 +164,7 @@ public class AFN{
         
         this.EdosAceptacion.clear();
         this.EdosAceptacion.addAll(afn2.getEdosAceptacion());
-        System.out.println("Exito Concatenacion.");
+        System.out.println("Operacion CONCATENACION Exitosa.");
     }
     
     public void cerraduraTransitiva(){//+
@@ -192,7 +194,7 @@ public class AFN{
         for(int i=0;i<EstadosAFN.size();i++){
             EstadosAFN.get(i).setIdentificador(i);
         }
-        System.out.println("Todo OK Cerradura Positiva.");
+        System.out.println("Operacion CERRADURA POSITIVA Exitosa.");
     }
     
     public void cerraduradeKleene(){//*
@@ -225,7 +227,7 @@ public class AFN{
         for(int i=0;i<EstadosAFN.size();i++){
             EstadosAFN.get(i).setIdentificador(i);
         }
-        System.out.println("Todo OK Cerradura Kleene.");
+        System.out.println("Operacion CERRADURA KLEENE Exitosa.");
     }
     
     public void cerraduraOpcional(){//?
@@ -258,7 +260,7 @@ public class AFN{
         for(int i=0;i<EstadosAFN.size();i++){
             EstadosAFN.get(i).setIdentificador(i);
         }
-        System.out.println("Todo OK Cerradura Opcional.");
+        System.out.println("Operacion CERRADURA OPCIONAL Exitosa.");
     }
     
     //OPERACIONES   
@@ -567,6 +569,7 @@ public class AFN{
         }
         
         afd.generarArrayTabla();//Generar tabla en el AFD
+        System.out.println("Operacion CONVERTIR AFN->AFD Exitosa.");
         return afd;
     }
     
