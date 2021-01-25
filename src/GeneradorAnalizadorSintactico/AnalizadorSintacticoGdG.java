@@ -105,8 +105,9 @@ public class AnalizadorSintacticoGdG {
 
         //Recorrer Tabla y  Asignar Simbolos Terminales
         System.out.println("\n\nNumReglas: " + numReglas);
+        int i = 0;
         for (Regla r : ArrReglas) {
-            System.out.print("\nRegla: [" + r.getStrSimb() + "] -> ");
+            System.out.print("\nRegla "+i+": [" + r.getStrSimb() + "] -> ");
 
             Nodo sig = r.getApNodo();
             while (sig != null) {
@@ -124,6 +125,7 @@ public class AnalizadorSintacticoGdG {
                 }
                 sig = sig.getApNodo();
             }
+            i++;
         }
         System.out.println("\nFin asignacion de simbolos no terminales.");
         return ArrReglas;

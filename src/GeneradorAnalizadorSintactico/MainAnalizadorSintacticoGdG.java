@@ -21,13 +21,13 @@ public class MainAnalizadorSintacticoGdG {
     public static void main(String[] args) throws FileNotFoundException, IOException {
         AnalizadorSintacticoGdG analizador = new AnalizadorSintacticoGdG();
         
-        ArrReglas = analizador.generarListaDeReglas("ExpresionesRegularesParaGdG3.txt");
+        ArrReglas = analizador.generarListaDeReglas("ExpresionesRegularesParaGdG4.txt");
         numReglas = ArrReglas.size();
         
         ArrayList<String> res;
         
         //res = First(ArrReglas.get(2).apNodo);
-        res = Follow("C'");
+        res = Follow("F");
         
         System.out.print("\n\n\t{");
         for(String e: res)

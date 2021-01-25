@@ -11,6 +11,7 @@ import static clases.AFN.epsilon;
 import clases.Estado;
 import clases.Resultado;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -190,7 +191,9 @@ public class MainCalculadora {
 
         //num+num+num
         //String CadenaparaAnalizar = "SIN(90)";
-        String CadenaparaAnalizar = "20.8+7^(9-5)/4";
+        /*String CadenaparaAnalizar = "20.8+7^(9-5)/4";
+        
+        
 
         AnalizadorSintacticoCalculadora calculadora = new AnalizadorSintacticoCalculadora(tablaAFD, CadenaparaAnalizar);                   
 
@@ -203,7 +206,26 @@ public class MainCalculadora {
             System.out.println("\tResultado: "+res.getValor());
         }else{
             System.out.println("\n\nCadena no valida.");
-        }
+        }*/
+        while(true){
+                String CadenaparaAnalizar = JOptionPane.showInputDialog("Ingrese la cadena");
+               // String CadenaparaAnalizar = "20.8+7^(9-5)/4";
+
+                AnalizadorSintacticoCalculadora calculadora = new AnalizadorSintacticoCalculadora(tablaAFD, CadenaparaAnalizar);                   
+
+                Resultado res = new Resultado();
+                calculadora.E(res);
+
+                if(res.isValido()){
+                    System.out.println("\n\nCadena Aceptada! ");
+                    System.out.println("\tPostfijo:  "+res.getCadena());
+                    System.out.println("\tResultado: "+res.getValor());
+                    JOptionPane.showMessageDialog(null,"\tResultado: "+res.getValor()+"\n\tPostFijo: "+res.getCadena(),
+                            "El resultado de"+CadenaparaAnalizar,JOptionPane.INFORMATION_MESSAGE);
+                }else{
+                    System.out.println("\n\nCadena no valida.");
+                }
+         }
  
     }  
     

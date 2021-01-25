@@ -5,6 +5,8 @@
  */
 package GeneradorAnalizadorLexico;
 
+import clases.AFD;
+import clases.AFN;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -36,6 +38,11 @@ public class Principal {
                 
                 linea = br.readLine();
             }
+            
+            AFN afn = AFDgenerador.getAFNFinal();
+            AFD afd = afn.convertirAFN();
+            afd.generarArchivoTabla("tablaAFDanalizadorlexico");
+            
         } catch (FileNotFoundException e) {
             System.out.println("Error: Fichero no encontrado");
             System.out.println(e.getMessage());
